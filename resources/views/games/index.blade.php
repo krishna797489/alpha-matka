@@ -41,6 +41,7 @@
                      <th>Name</th>
                       <th>Start Time</th>
                       <th>End Time</th>
+                      <th>Game Code</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -88,7 +89,7 @@
                   <label class="form-control-label">Start time <span class="input-mandatory">*</span></label> 
                     <div class="input-group date timepicker1" id="start_time" data-target-input="nearest">
                       
-                    <input type="text" class="form-control datetimepicker-input datetimepicker" data-target="#start_time" name="start_time"/>
+                    <input type="text" placeholder="11:00:00" class="form-control datetimepicker-input datetimepicker" data-target="#start_time" name="start_time"/>
                       <div class="input-group-append" data-target="#start_time" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>                     
@@ -104,7 +105,7 @@
                   <div class="form-group">
                   <label class="form-control-label">End time <span class="input-mandatory">*</span></label> 
                     <div class="input-group date timepicker1" id="end_time" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input datetimepicker" data-target="#end_time" name="end_time"/>                    
+                    <input type="text" placeholder="12:00:00" class="form-control datetimepicker-input datetimepicker" data-target="#end_time" name="end_time"/>                    
                       <div class="input-group-append" data-target="#end_time" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
@@ -113,7 +114,14 @@
                   </div>
                   
                 </div>
-                 </div>                   
+                 </div> 
+                 <div class="col-md-12">
+                  <div class="form-group">
+                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label> 
+                      <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" name="code" class="form-control" placeholder="code Ex 1234-1234-1234">
+                      <span class="text-danger error-msg name"></span>
+                  </div> 
+              </div>                  
                    </div>
                </div>
             <div class="modal-footer">                                       
@@ -155,7 +163,7 @@
                   <div class="form-group">
                   <label class="form-control-label">Start time <span class="input-mandatory">*</span></label> 
                     <div class="input-group date timepicker1" id="start_time_edit" data-target-input="nearest">
-                    <input type="text" id="edit-start-time" class="form-control datetimepicker-input datetimepicker" data-target="#start_time_edit" name="start_time"/>
+                    <input type="text" placeholder="11:00:00" id="edit-start-time" class="form-control datetimepicker-input datetimepicker" data-target="#start_time_edit" name="start_time"/>
                     
                       <div class="input-group-append" data-target="#start_time_edit" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
@@ -171,7 +179,7 @@
                   <div class="form-group">
                   <label class="form-control-label">End time <span class="input-mandatory">*</span></label> 
                     <div class="input-group date timepicker1" id="end_time_edit" data-target-input="nearest">
-                    <input type="text" id="edit-end-time" class="form-control datetimepicker-input datetimepicker" data-target="#end_time_edit" name="end_time"/>                   
+                    <input type="text" placeholder="12:00:00" id="edit-end-time" class="form-control datetimepicker-input datetimepicker" data-target="#end_time_edit" name="end_time"/>                   
                       <div class="input-group-append" data-target="#end_time_edit" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
@@ -181,7 +189,14 @@
                   </div>
                   <!-- /.form group -->
                 </div>
-                 </div>                   
+                 </div> 
+                 <div class="col-md-12">
+                  <div class="form-group">
+                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label> 
+                      <input type="text" id="edit-code" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" name="code" class="form-control" placeholder="code Ex 1234-1234-1234">
+                      <span class="text-danger error-msg name"></span>
+                  </div> 
+              </div>                  
                   </div>
             </div>
             <div class="modal-footer">                                       
@@ -205,6 +220,7 @@
       { data: 'name', name: 'name'},
       { data: 'start_time', name: 'start_time'},  
       { data: 'end_time', name: 'end_time'},  
+      { data: 'code', name: 'code'},  
       { data: 'action', name: 'action', orderable: false},              
       ],
     //   order: [[1, 'desc']]
@@ -276,6 +292,8 @@ function get(cid){
             $('#edit-games').val(data.name);
             $('#edit-start-time').val(data.start_time);
             $('#edit-end-time').val(data.end_time);
+            $('#edit-code').val(data.code);
+
             $("#edit-games-modal").modal('show');
         }
     })

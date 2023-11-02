@@ -60,11 +60,17 @@ class GamesController extends Controller
     'name' => 'required|max:255',
     'start_time' => 'required',
     'end_time' => 'required|after:start_time',
-], [
+    'code' => [
+      'required',
+      'regex:/^\d{4}-\d{4}-\d{4}$/',
+      
+  ],
+  ], [
     'name.required' => 'The name field is required.',
     'start_time.required' => 'The start time field is required.',
     'end_time.required' => 'The end time field is required.',
     'end_time.after' => 'The end time must be after the start time.', 
+    'code.required' => 'The code is enter 1234-1234-1234.', 
 ]);
      if ($validator->fails()) {
          return response()->json(array(
@@ -78,6 +84,7 @@ class GamesController extends Controller
        $games->name = $request->name;
        $games->start_time = $request->start_time;
        $games->end_time = $request->end_time;
+       $games->code = $request->code;
        if($games->save()){
          return response()->json(array(
              'error' => 0,
@@ -100,6 +107,11 @@ class GamesController extends Controller
         'name' => 'required|max:255',
         'start_time' => 'required',
         'end_time' => 'required|after:start_time',
+        'code' => [
+          'required',
+          'regex:/^\d{4}-\d{4}-\d{4}$/',
+          
+      ],
     ], [
         'name.required' => 'The name field is required.',
         'start_time.required' => 'The start time field is required.',
@@ -117,6 +129,7 @@ class GamesController extends Controller
           $games->name = $request->name;
           $games->start_time = $request->start_time;
           $games->end_time = $request->end_time;
+          $games->code = $request->code;
           if($games->save()){
             return response()->json(array(
                 'error' => 0,
