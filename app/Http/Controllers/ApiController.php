@@ -6,9 +6,11 @@ use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Games;
-
-
+use App\singlepanna;
+use App\typegames;
+use App\UserOtp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
@@ -103,53 +105,88 @@ public function logout(Request $request)
     }
 }
 
+   
     public function updateprofile(Request $request)
-        {
-        // Validate the request data, if necessary
-        $request->validate([
-            'phone' => 'required',
-            'name' => 'required',
-            'email' => 'required|email',
-        ]);
-
-        // Find the user by ID
-        $user = User::find($request->id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'],404);
-        }
-
-        // Update the user's information
-        $user->phone = $request->input('phone');
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->save();
-
-        return response()->json(['message' => 'User updated successfully']);
-    }
-
-    public function verifyMobile(Request $request)
     {
-        $mobile = $request->input('phone');
-
-        // Retrieve the record associated with the mobile number
-        $user = User::where('phone', $mobile)->first();
-
-        if ($user) {
-            // Perform your verification logic here
-
-            // For simplicity, we'll just return a response indicating success
-            return response()->json([
-                'success' => true,
-                'message' => 'Mobile verification successful'
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mobile number not found'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|unique:users',
+            'name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+        ], [
+           
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(),'status'=>false], 400);
+        }
+        // Retrieve the old customer data
+        $cust = User::where('id', $request->id)->first();
+    
+    
+    
+        // Update other customer information
+        $cust->name = $request->name;
+        $cust->email = $request->email;
+        $cust->phone = $request->phone;
+     
+    
+        // Save the updated customer information
+        if ($cust->save()) {
+            return response()->json(['message' => 'customer updated successfully'], 201);
         }
     }
+
+   
+
+    // public function generate(Request $request)
+    // {
+    //     /* Validate Data */
+    //     $request->validate([
+    //         'phone' => 'required|exists:users,phone',
+    //     ]);
+
+    //     /* Generate an OTP (Random 6-digit OTP) */
+    //     $otp = rand(100000, 999999); // Generate a random 6-digit OTP
+
+    //     /* Send the OTP via SMS (you need to implement this function) */
+    //     // Implement the code to send SMS with the OTP
+
+    //     /* Return a JSON response */
+    //     return response()->json([
+    //         'message' => 'OTP has been sent to your mobile number.',
+    //         'otp' => $otp
+    //     ]);
+    // }
+    
+    // public function generateOtp(Request $request)
+    // {
+    //     $phone = $request->input('phone');
+    //     $user = User::where('phone', $phone)->first();
+
+    //     if (!$user) {
+    //         return response()->json(['error' => 'User not found'], 404);
+    //     }
+
+    //     $userOtp = UserOtp::where('id', $user->id)->latest()->first();
+    //     $now = now();
+
+    //     if ($userOtp && $now->isBefore($userOtp->expire_at)) {
+    //         return response()->json(['otp' => $userOtp->otp, 'message' => 'Existing OTP found'], 200);
+    //     }
+
+    //     // Generate a new OTP
+    //     $otp = rand(123456, 999999);
+    //     $expireAt = $now->addMinutes(10);
+
+    //     // Create a new OTP record
+    //     $userOtp = UserOtp::create([
+    //         'id' => $user->id,
+    //         'otp' => $otp,
+    //         'expire_at' => $expireAt
+    //     ]);
+
+    //     return response()->json(['otp' => $userOtp->otp, 'message' => 'New OTP generated'], 201);
+    // }
+
 
 //get profile api
 public function myprofile($id)
@@ -170,63 +207,79 @@ public function myprofile($id)
     ]);
 }
 
+
+
 //old pass throw change password 
-public function changePassword(Request $request)
-{
-    // Validations
-    $request->validate([
-        'old_password' => 'required',
-        'new_password' => 'required|string|min:8|confirmed',
-    ]);
 
-    // Get the authenticated user
-    $user = auth()->user();
+// public function passwordUpdate(Request $request)
+// {
+//     $user = User::get(); // Get the currently authenticated user
+// echo"<pre>";print_r($user);exit;
+//     $validator = Validator::make($request->all(), [
+//         'current_password' => [
+//             'required',
+//             function ($attribute, $value, $fail) use ($user) {
+//                 if (!(Hash::check($value, $user->password))) {
+//                     $fail('Current password is wrong.');
+//                 }
+//             }
+//         ],
+//         'new_password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
+//         'confirm_password' => 'required|same:new_password',
+//     ]);
 
-    // Check if the old password matches
-    if (!Hash::check($request->old_password, $user->password)) {
-        return response()->json(['message' => 'Old password is incorrect']);
-    }
+//     if ($validator->fails()) {
+//         return response()->json(['errors' => $validator->errors()], 400);
+//     }
 
-    // Update the user's password
-    $user->update([
-        'password' => Hash::make($request->new_password),
-    ]);
+//     // Update the password
+//     $user->password = Hash::make($request->new_password);
+//     $user->save();
 
-    return response()->json(['message' => 'Password changed successfully']);
+//     return response()->json(['message' => 'Password successfully updated', 'status' => true], 200);
+// }
+
+
+//type games api singledigit
+public function singledigit(Request $request){
+        $validator=Validator::make($request->all(),[
+            'date'=>'required|date',
+            'open_digit'=>'required',
+            'points'=>'required|numeric',
+            'time_session'=>'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(),'status'=>false], 400);
+        }
+        $gms=typegames::create([
+            'date' => $request->input('date'),
+            'open_digit' => $request->input('open_digit'),
+            'points' => $request->input('points'),
+            'time_session' => $request->input('time_session'),
+
+        ]);
+        return response()->json(['message' => ' successfully added','status'=>true]);
+
 }
-
-//otp varification
-public function sendOtp(Request $request)
-{
-    // Generate a random OTP (e.g., 4-6 digits)
-    $otp = mt_rand(1000, 9999);
-
-    // Send OTP via SMS (Twilio example)
-    $twilio = new Client(env('ACd297bb2d5e39ad3cb42ba0db3af871e6'), env('04df012cdbd82ccd684d9f374780b38b'));
-    $twilio->messages->create(
-        $request->input('phone'),
-        [
-            'from' => env('TWILIO_PHONE_NUMBER'),
-            'body' => 'Your OTP: ' . $otp,
-        ]
-    );
-
-    // You can save the OTP in the database or send it in the response
-    return response()->json(['message' => 'OTP sent successfully', 'otp' => $otp]);
-}
-public function verifyOtp(Request $request)
-{
-    $user = auth()->user();
-    $profile = $user->profile;
-
-    if ($profile->otp == $request->input('otp')) {
-        // OTP is correct, proceed with verification
-        $profile->otp = null; // Clear the OTP
-        $profile->save();
-        return response()->json(['message' => 'OTP verified successfully']);
+//single panna 
+public function singlepanna(Request $request){
+    $validator=Validator::make($request->all(),[
+        'date'=>'required|date',
+        'digit'=>'required',
+        'point'=>'required|numeric',
+        
+    ]);
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors(),'status'=>false], 400);
     }
+    $gms=singlepanna::create([
+        'date' => $request->input('date'),
+        'digit' => $request->input('digit'),
+        'point' => $request->input('point'),
 
-    return response()->json(['message' => 'OTP verification failed']);
+    ]);
+    return response()->json(['message' => ' successfully added','status'=>true]);
+
 }
 
 public function gamestore(Request $request)
@@ -255,6 +308,10 @@ public function gamestore(Request $request)
     return response()->json(['message' => 'Games successfully added','status'=>true], 200);
 
 }
+
+
+    
+
 
 public function getAllGames()
     {

@@ -33,19 +33,25 @@ Route::post('/verify-otp',[ApiController::class,'verifyOtp']);
 // Login route
 Route::post('/login',[ApiController::class,'login']);
 Route::post('/logout', [ApiController::class, 'logout']);
-Route::post('update/{id}', [ApiController::class, 'updateprofile']);
-Route::post('updateprofile',[ApiController::class,'updateprofile']);
+Route::post('updateprofile/{id}', [ApiController::class,'updateprofile']);
+// Route::post('updateprofile',[ApiController::class,'updateprofile']);
 
 Route::post('/varify-mobile', [ApiController::class, 'verifyMobile']);
 Route::get('profile/{id}', [ApiController::class, 'myprofile']);
-Route::post('change-password',[ApiController::class,'changePassword']); //old pass throw change password 
+Route::post('passwordupdate',[ApiController::class,'passwordupdate']); //old pass throw change password 
 
+Route::post('generate-otp', [ApiController::class,'generate']);
+Route::post('generate-otp', [ApiController::class,'generateOtp']);
 
 
 //games Api
 Route::post('gamestore', [ApiController::class,'gamestore']);
 Route::post('gamesupdate/{id}', [ApiController::class,'gamesupdate']);
 Route::get('/getgames', [ApiController::class, 'getAllGames']);
+
+//types games api
+Route::post('/singledigit', [ApiController::class, 'singledigit']);
+Route::post('/singlepanna', [ApiController::class, 'singlepanna']);
 
 //Route::put('update/{id}',[ApiController::class,'update']);
 Route::delete('/deletegames/{id}', 'ApiController@destroy');
@@ -55,7 +61,7 @@ Route::get('/list', [ApiController::class, 'index']);
 
 //customer Api
 Route::post('custstore', [CustomerApiController::class,'custstore']);
-Route::put('custupdate/{id}', [CustomerApiController::class,'custupdate']);
+Route::post('custupdate/{id}', [CustomerApiController::class,'custupdate']);
 Route::delete('/deletecustomer/{id}','CustomerApiController@destroy');
 Route::get('/showcust/{id}', 'CustomerApiController@showcust');
 Route::get('/listcust', [CustomerApiController::class, 'index']);
