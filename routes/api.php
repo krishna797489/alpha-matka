@@ -38,7 +38,7 @@ Route::post('updateprofile/{id}', [ApiController::class,'updateprofile']);
 
 Route::post('/varify-mobile', [ApiController::class, 'verifyMobile']);
 Route::get('profile/{id}', [ApiController::class, 'myprofile']);
-Route::post('passwordupdate',[ApiController::class,'passwordupdate']); //old pass throw change password 
+Route::post('changePassword/{id}',[ApiController::class,'changePassword']); //old pass throw change password 
 
 Route::post('generate-otp', [ApiController::class,'generate']);
 Route::post('generate-otp', [ApiController::class,'generateOtp']);

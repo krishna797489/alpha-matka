@@ -210,34 +210,36 @@ public function myprofile($id)
 
 
 //old pass throw change password 
+public function changePassword(Request $request, $id)
+    {
+        $user = User::find($id);
 
-// public function passwordUpdate(Request $request)
-// {
-//     $user = User::get(); // Get the currently authenticated user
-// echo"<pre>";print_r($user);exit;
-//     $validator = Validator::make($request->all(), [
-//         'current_password' => [
-//             'required',
-//             function ($attribute, $value, $fail) use ($user) {
-//                 if (!(Hash::check($value, $user->password))) {
-//                     $fail('Current password is wrong.');
-//                 }
-//             }
-//         ],
-//         'new_password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
-//         'confirm_password' => 'required|same:new_password',
-//     ]);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
-//     if ($validator->fails()) {
-//         return response()->json(['errors' => $validator->errors()], 400);
-//     }
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|different:current_password|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
+            'confirm_password' => 'required|same:new_password',
+        ]);
 
-//     // Update the password
-//     $user->password = Hash::make($request->new_password);
-//     $user->save();
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
 
-//     return response()->json(['message' => 'Password successfully updated', 'status' => true], 200);
-// }
+        // Verify the current password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect'], 401);
+        }
+
+        // Update the password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json(['message' => 'Password changed successfully'], 200);
+    }
+
 
 
 //type games api singledigit
