@@ -43,6 +43,13 @@ Route::post('changePassword/{id}',[ApiController::class,'changePassword']); //ol
 Route::post('generate-otp', [ApiController::class,'generate']);
 Route::post('generate-otp', [ApiController::class,'generateOtp']);
 
+//Participate
+Route::post('/participate/{id}', [ApiController::class,'participate']);
+
+//wallet se related
+Route::post('/addpoint/{id}', [ApiController::class,'addpoint']);
+Route::post('/getpoint/{id}', [ApiController::class,'getpoint']);
+
 
 //games Api
 Route::post('gamestore', [ApiController::class,'gamestore']);

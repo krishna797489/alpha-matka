@@ -6,6 +6,7 @@ use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Games;
+use App\Log;
 use App\singlepanna;
 use App\typegames;
 use App\UserOtp;
@@ -106,34 +107,31 @@ public function logout(Request $request)
 }
 
    
-    public function updateprofile(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required|unique:users',
-            'name' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-        ], [
-           
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors(),'status'=>false], 400);
-        }
-        // Retrieve the old customer data
-        $cust = User::where('id', $request->id)->first();
-    
-    
-    
-        // Update other customer information
-        $cust->name = $request->name;
-        $cust->email = $request->email;
-        $cust->phone = $request->phone;
-     
-    
-        // Save the updated customer information
-        if ($cust->save()) {
-            return response()->json(['message' => 'customer updated successfully'], 201);
-        }
+public function updateprofile(Request $request)
+{
+    // Validation rules for name and email, excluding the 'phone' field
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|unique:users,name,' . $request->id,
+        'email' => 'required|email|unique:users,email,' . $request->id,
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors(), 'status' => false], 400);
     }
+
+    // Retrieve the old customer data
+    $cust = User::where('id', $request->id)->first();
+
+    // Update customer information
+    $cust->name = $request->name;
+    $cust->email = $request->email;
+
+    // Save the updated customer information
+    if ($cust->save()) {
+        return response()->json(['message' => 'Customer updated successfully'], 201);
+    }
+}
+
 
    
 
@@ -240,49 +238,93 @@ public function changePassword(Request $request, $id)
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
 
+//types games
 
+public function participate(Request $request ,$id)
+{
+    $data = $request->all();
 
-//type games api singledigit
-public function singledigit(Request $request){
-        $validator=Validator::make($request->all(),[
-            'date'=>'required|date',
-            'open_digit'=>'required',
-            'points'=>'required|numeric',
-            'time_session'=>'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors(),'status'=>false], 400);
+     {
+        // Find the user by their id in the users table
+        $user = User::find($id);        
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
-        $gms=typegames::create([
-            'date' => $request->input('date'),
-            'open_digit' => $request->input('open_digit'),
-            'points' => $request->input('points'),
-            'time_session' => $request->input('time_session'),
 
-        ]);
-        return response()->json(['message' => ' successfully added','status'=>true]);
-
-}
-//single panna 
-public function singlepanna(Request $request){
-    $validator=Validator::make($request->all(),[
-        'date'=>'required|date',
-        'digit'=>'required',
-        'point'=>'required|numeric',
         
-    ]);
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors(),'status'=>false], 400);
-    }
-    $gms=singlepanna::create([
-        'date' => $request->input('date'),
-        'digit' => $request->input('digit'),
-        'point' => $request->input('point'),
+        $participation = typegames::create([
+       
+            'game_id' => $request->input('game_id'),
+             'type' => $request->input('type'),
+            'date' => $request->input('date'),
+            'digit' =>$request->input('digit'),
+            'session_type' => $request->input('session_type'),
+            'point' => $request->input('point'),
+            'user_id' => $user->id, 
+        ]);
+        return response()->json(['message' => 'Registration successful','status'=>true], 201);
+    }  
+}
 
-    ]);
-    return response()->json(['message' => ' successfully added','status'=>true]);
+//wallet se related
+public function addpoint(Request $request, $id){
+    $data = $request->all();
+
+     {
+        // Find the user by their id in the users table
+        $user = Log::find($id);        
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $oldpoint = $user->point;
+        $newpoint = $oldpoint + $request->input('point');
+        $user->point = $newpoint;
+        $user->save();
+
+        // $participation = Log::create([
+       
+        //     'user_id' => $user->id,
+        //      'payment_type' => $request->input('payment_type'),
+        //     'point' => $request->input('point'),
+        //    // 'amount' => $request->input('amount'),
+            
+        // ]);
+        return response()->json(['message' => 'point successful Add','status'=>true], 201);
+
+    }
 
 }
+
+public function getpoint(Request $request, $id)
+{
+    $data = $request->all();
+
+    // Find the user by their ID in the users table
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    // Find the "point" record by the user's ID in the Log table
+    $point = Log::select('point')->where('user_id', $id)->first();
+
+    if (!$point) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Record not found'
+        ]);
+    }
+
+    return response()->json([
+        'success' => true,
+        'data' => $point
+    ]);
+}
+
+
+
+
 
 public function gamestore(Request $request)
 {

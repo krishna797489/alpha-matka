@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class typegames extends Model
 {
-    protected $single_digit = 'single_digit';
-    protected $fillable = ['date','open_digit','points','time_session'];
+    protected $tablen = 'typegames';
+    protected $fillable = ['game_id','type','date','digit','session_type','point','user_id'];
 
-    protected $table = 'single_panna';
-    protected $data = ['date','digit','point'];
+  
 
 }
