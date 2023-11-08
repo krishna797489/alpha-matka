@@ -6,12 +6,15 @@ use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Games;
+use App\history;
 use App\Log;
 use App\singlepanna;
 use App\typegames;
 use App\UserOtp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ApiController extends Controller
 {
@@ -239,7 +242,6 @@ public function changePassword(Request $request, $id)
     }
 
 //types games
-
 public function participate(Request $request ,$id)
 {
     $data = $request->all();
@@ -255,75 +257,97 @@ public function participate(Request $request ,$id)
         $participation = typegames::create([
        
             'game_id' => $request->input('game_id'),
-             'type' => $request->input('type'),
+             'type' => $request->input('type','Empty'),
             'date' => $request->input('date'),
             'digit' =>$request->input('digit'),
-            'session_type' => $request->input('session_type'),
+            'close_digit' =>$request->input('close_digit','Empty'),
+            'session_type' => $request->input('session_type','Empty'),
             'point' => $request->input('point'),
             'user_id' => $user->id, 
         ]);
         return response()->json(['message' => 'Registration successful','status'=>true], 201);
     }  
 }
-
 //wallet se related
-public function addpoint(Request $request, $id){
-    $data = $request->all();
 
-     {
-        // Find the user by their id in the users table
-        $user = Log::find($id);        
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-        $oldpoint = $user->point;
-        $newpoint = $oldpoint + $request->input('point');
-        $user->point = $newpoint;
-        $user->save();
-
-        // $participation = Log::create([
-       
-        //     'user_id' => $user->id,
-        //      'payment_type' => $request->input('payment_type'),
-        //     'point' => $request->input('point'),
-        //    // 'amount' => $request->input('amount'),
-            
-        // ]);
-        return response()->json(['message' => 'point successful Add','status'=>true], 201);
-
-    }
-
-}
-
-public function getpoint(Request $request, $id)
-{
-    $data = $request->all();
-
-    // Find the user by their ID in the users table
+public function addpoint(Request $request,$id){
     $user = User::find($id);
 
+
     if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
+        return response()->json(['message' => 'User not found', 'status' => false], 404);
     }
-
-    // Find the "point" record by the user's ID in the Log table
-    $point = Log::select('point')->where('user_id', $id)->first();
-
-    if (!$point) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Record not found'
+    $time =Carbon::now();
+    if ($user) {
+        // Agar user_id ke sath ek record mil gaya, to use update karein
+        history::create([
+            'user_id' => $user->id,
+            'payment_type' => $request->input('payment_type'),
+            'point' => $request->input('point'),
+            'time' =>Carbon::now(),
+            'type' => $request->input('type','0'),
+            // 'amount' => $request->input('amount'),
         ]);
+        return response()->json(['message' => 'new point successfully added', 'status' => true], 201);
+    } 
+
     }
 
-    return response()->json([
-        'success' => true,
-        'data' => $point
-    ]);
+    public function getPointSum($user_id) {
+        $result = DB::select("SELECT (SELECT SUM(point) FROM history WHERE user_id = ?) - (SELECT SUM(debit) FROM history WHERE user_id = ?) AS difference", [$user_id, $user_id]);
+
+        if (!empty($result)) {
+            $difference = $result[0]->difference;
+            return response()->json(['difference' => $difference], 200);
+        } else {
+            return response()->json(['message' => 'User not found or no data available', 'status' => false], 404);
+        }
+    }
+
+//add point history
+
+public function addPointsForhistory($userId) {
+    $points = DB::table('history')
+        ->select('point', 'type', 'time')
+        ->where('user_id', $userId)
+        ->where('type', 0)
+        ->whereNotNull('point')  // Exclude rows with null 'point' values
+        ->get();
+    return response()->json(['points' => $points], 200);
 }
 
+//withdraw point
+public function pointwithdraw(Request $request, $user_id){
+    // Check if the user exists
+    $user = history::find($user_id);
 
+    if (!$user) {
+        return response()->json(['message' => 'User not found', 'status' => false], 404);
+    }
 
+    // If the user exists, insert the data
+    history::create([
+        'user_id' => $user_id, // Assuming there's a 'user_id' field in the 'history' table
+        'debit' => $request->input('debit'),
+        'withdraw_methord' => $request->input('withdraw_methord'),
+        'type' => $request->input('type', '1'),
+        'time' => Carbon::now(),
+    ]);
+
+    return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
+}
+
+//withdraw point history
+
+public function withdrawPointsForhistory($userId){
+    $points = DB::table('history')
+    ->select('debit', 'type', 'time')
+    ->where('user_id', $userId)
+    ->where('type', 1)
+    ->whereNotNull('debit')  // Exclude rows with null 'point' values
+    ->get();
+    return response()->json(['points' => $points], 200);
+}
 
 
 public function gamestore(Request $request)
@@ -352,9 +376,6 @@ public function gamestore(Request $request)
     return response()->json(['message' => 'Games successfully added','status'=>true], 200);
 
 }
-
-
-    
 
 
 public function getAllGames()

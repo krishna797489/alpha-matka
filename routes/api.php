@@ -48,8 +48,10 @@ Route::post('/participate/{id}', [ApiController::class,'participate']);
 
 //wallet se related
 Route::post('/addpoint/{id}', [ApiController::class,'addpoint']);
-Route::post('/getpoint/{id}', [ApiController::class,'getpoint']);
-
+Route::get('getPointSum/{user_id}', [ApiController::class, 'getPointSum']);
+Route::get('addPointshistory/{user_id}', [ApiController::class, 'addPointsForhistory']);
+Route::get('withdrawPointsForhistory/{user_id}', [ApiController::class, 'withdrawPointsForhistory']);
+Route::get('pointwithdraw/{user_id}', [ApiController::class, 'pointwithdraw']);
 
 //games Api
 Route::post('gamestore', [ApiController::class,'gamestore']);
