@@ -5,11 +5,11 @@
       <!-- /.login-logo -->
       <div class="card card-outline card-primary">
         <div class="card-header text-center">
-          <a href="#" class="h1"><b>Alpha Mataka</b></a>
+          <a href="#" class="h1"><b>Dev Mataka App</b></a>
         </div>
         <div class="card-body">
           <p class="login-box-msg">Sign in to start your session</p>
-    
+
           <form action="{{route('login.verify')}}" method="post">
             @csrf
             <div class="input-group mb-3">
@@ -17,8 +17,8 @@
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-user"></span>
-                </div>  
-              </div>             
+                </div>
+              </div>
             </div>
             @if ($errors->has('name'))
             <span class="text-danger">{{ $errors->first('name') }}</span>
@@ -29,7 +29,7 @@
                 <div class="input-group-text">
                   <span class="fas fa-lock"></span>
                 </div>
-              </div>            
+              </div>
             </div>
             @if ($errors->has('password'))
             <span class="text-danger">{{ $errors->first('password') }}</span>
@@ -42,12 +42,12 @@
                 <a href="{{route('login.forgot')}}">I forgot my password</a>
               </p>
               <!-- /.col -->
-            </form> 
-            </div>        
+            </form>
+            </div>
         </div>
         <!-- /.card-body -->
       </div>
       <!-- /.card -->
     </div>
-    <!-- /.login-box -->  
+    <!-- /.login-box -->
     @endsection

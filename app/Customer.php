@@ -8,14 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
-    protected $table = "customer";
+    protected $table = "users";
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
-        'image',
-        
+        'mpin',
+        'created_at',
+        'usertype',
+        'status',
+
     ];
     public static function softDelete($condition)
     {

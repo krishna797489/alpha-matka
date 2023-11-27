@@ -42,6 +42,7 @@ Route::get('/games/get', [GamesController::class, 'get'])->name('games.get');
 Route::post('/games/add', [GamesController::class, 'store'])->name('games.store');
 Route::post('/games/edit', [GamesController::class, 'edit'])->name('games.edit');
 Route::post('/games/delete', [GamesController::class, 'delete'])->name('games.delete');
+Route::post('/games/status', [GamesController::class, 'status'])->name('games.status');
 
 //customer route
 Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');

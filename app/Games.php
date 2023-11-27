@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Games extends Model
 {
     protected $table = 'games';
-    protected $fillable = ['name','start_time','end_time','code'];
+    protected $fillable = ['name','start_time','end_time','code','status'];
 
     public static function softDelete($condition)
     {

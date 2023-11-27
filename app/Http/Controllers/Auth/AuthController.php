@@ -1,7 +1,7 @@
 <?php
-  
+
 namespace App\Http\Controllers\Auth;
-  
+
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon; 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Validator;
 // use Illuminate\Mail\Mailable;
 class AuthController extends Controller
 {
-   
+
     public function index()
     {
       if (Auth::check()) {
@@ -28,15 +28,15 @@ class AuthController extends Controller
     }
 
         return view('authui.login');
-    } 
-  
+    }
+
     public function dashboard()
     {
         return view('dashboard.home');
     }
     public function login(Request $request)
     {
-        
+
       if (Auth::check()) {
         return redirect()->route('dashboard');
     }
@@ -46,7 +46,7 @@ class AuthController extends Controller
         ]);
         if ($user = User::where('name',$request->name)->first()){
           if ($request->password) {
-              if ($user->status != 0){
+              if ($user->usertype != 0){
                   return back()->with('danger','User account is disable.')->onlyInput('email');
               }
               if($user->isDeleted == 1){
@@ -67,7 +67,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard')
                         ->with('success','You have Successfully loggedin');
         }
-  
+
         return back()->with('danger','username or password are wrong.')->onlyInput('email');
     }
 
@@ -90,29 +90,29 @@ class AuthController extends Controller
         }
         $token = Str::random(64);
         DB::table('password_resets')->insert([
-            'email' => $request->email, 
-            'token' => $token, 
+            'email' => $request->email,
+            'token' => $token,
             'created_at' => Carbon::now()
           ]);
-         
+
           $mail = Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
-           
+
             $message->to($request->email);
             $message->subject('User Forgot password link');
-            
+
         });
 
         return redirect()->route('login')->with('success', 'We have e-mailed your password reset link!');
     }
 
-    public function showResetPasswordForm($token) { 
-        
+    public function showResetPasswordForm($token) {
+
         return view('authui.forgetPasswordLink', ['token' => $token]);
      }
 
       public function submitResetPasswordForm(Request $request)
       {
-        
+
         $request->validate([
             // 'email' => 'required|email|exists:users',
             'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/|confirmed',
@@ -123,12 +123,12 @@ class AuthController extends Controller
 
         $updatePassword = DB::table('password_resets')
                             ->where(
-                              'token', $request->token, 
+                              'token', $request->token,
                             )
                             ->first();
                             // $decoded_traces=json_encode($updatePassword, true);
                             // echo"<pre>";print_r($updatePassword);exit;
-                            
+
         if(!($updatePassword)){
             // echo"<pre>";print_r($decoded_traces);exit;
             return back()->with('danger', 'Invalid token!');
@@ -146,14 +146,14 @@ class AuthController extends Controller
                     ->update(['password' => Hash::make($request->password)]);
                     // echo"<pre>";print_r($user);exit;
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
-   
+
         return redirect()->route('login')->with('success', 'Your password has been changed!');
     }
     public function logout() {
-      
+
         Auth::logout();
-  
+
         return Redirect('login');
     }
-  
+
 }

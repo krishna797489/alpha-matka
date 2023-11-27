@@ -26,11 +26,11 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header text-end">
-              
+
                 <!-- <button type="button" class="btn btn-info  m-l-15 text-white" data-bs-toggle="modal" data-bs-target="#add-games-modal" data-whatever="@mdo"><i class="fa fa-plus-circle"></i> Create New</button> -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-games-modal"><i class="fa fa-plus-circle"></i>
                 Create New</button>
-                 
+
               </div>
               <!-- /.card-header -->
               <div class="card-body p-3">
@@ -43,9 +43,10 @@
                       <th>End Time</th>
                       <th>Game Code</th>
                       <th>Action</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
-                  <tbody> 
+                  <tbody>
                   </tbody>
                 </table>
               </div>
@@ -59,7 +60,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div> 
+  </div>
 
     <div class="modal fade" id="add-games-modal">
     <div class="modal-dialog" role="document">
@@ -71,28 +72,28 @@
               </button>
             </div>
             <div class="modal-body">
-                <form action="post" id="form-add-games">                    
+                <form action="post" id="form-add-games">
                     <input type="hidden" id="add-games-id" name="id" value="">
                     @csrf
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-control-label">Name <span class="input-mandatory">*</span></label> 
+                            <label class="form-control-label">Name <span class="input-mandatory">*</span></label>
                             <input type="text" name="name" class="form-control" placeholder="Name">
                             <span class="text-danger error-msg name"></span>
-                        </div> 
+                        </div>
                     </div>
 
                  <div class="col-md-12">
                 <div class="bootstrap-timepicker">
                   <div class="form-group">
-                  <label class="form-control-label">Start time <span class="input-mandatory">*</span></label> 
+                  <label class="form-control-label">Start time <span class="input-mandatory">*</span></label>
                     <div class="input-group date timepicker1" id="start_time" data-target-input="nearest">
-                      
+
                     <input type="text" placeholder="11:00:00" class="form-control datetimepicker-input datetimepicker" data-target="#start_time" name="start_time"/>
                       <div class="input-group-append" data-target="#start_time" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
-                      </div>                     
+                      </div>
                       </div>
                       <span class="text-danger error-msg start_time"></span>
                     <!-- /.input group -->
@@ -103,35 +104,35 @@
                  <div class="col-md-12">
                 <div class="bootstrap-timepicker">
                   <div class="form-group">
-                  <label class="form-control-label">End time <span class="input-mandatory">*</span></label> 
+                  <label class="form-control-label">End time <span class="input-mandatory">*</span></label>
                     <div class="input-group date timepicker1" id="end_time" data-target-input="nearest">
-                    <input type="text" placeholder="12:00:00" class="form-control datetimepicker-input datetimepicker" data-target="#end_time" name="end_time"/>                    
+                    <input type="text" placeholder="12:00:00" class="form-control datetimepicker-input datetimepicker" data-target="#end_time" name="end_time"/>
                       <div class="input-group-append" data-target="#end_time" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
                       </div>
                       <span class="text-danger error-msg end_time"></span>
                   </div>
-                  
+
                 </div>
-                 </div> 
+                 </div>
                  <div class="col-md-12">
                   <div class="form-group">
-                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label> 
+                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label>
                       <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" name="code" class="form-control" placeholder="code Ex 1234-1234-1234">
                       <span class="text-danger error-msg name"></span>
-                  </div> 
-              </div>                  
+                  </div>
+              </div>
                    </div>
                </div>
-            <div class="modal-footer">                                       
+            <div class="modal-footer">
                 <button type="button"  onclick="addgame()" class="btn btn-primary">Save</button>
-                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>                                     
+                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </form>
         </div>
     </div>
-  </div> 
+  </div>
 
 
       <div class="modal fade" id="edit-games-modal">
@@ -145,26 +146,26 @@
             </div>
             <div class="modal-body">
                 <form action="post" id="form-edit-games">
-                    
+
                     <input type="hidden" id="edit-games-id" name="id" value="">
                     @csrf
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-control-label">Name <span class="input-mandatory">*</span></label> 
+                            <label class="form-control-label">Name <span class="input-mandatory">*</span></label>
                             <input type="text" name="name" id="edit-games" class="form-control" placeholder="Name">
                             <span class="text-danger error-msg name"></span>
-                        </div>                        
+                        </div>
                     </div>
-               
+
 
                 <div class="col-md-12">
                 <div class="bootstrap-timepicker">
                   <div class="form-group">
-                  <label class="form-control-label">Start time <span class="input-mandatory">*</span></label> 
+                  <label class="form-control-label">Start time <span class="input-mandatory">*</span></label>
                     <div class="input-group date timepicker1" id="start_time_edit" data-target-input="nearest">
                     <input type="text" placeholder="11:00:00" id="edit-start-time" class="form-control datetimepicker-input datetimepicker" data-target="#start_time_edit" name="start_time"/>
-                    
+
                       <div class="input-group-append" data-target="#start_time_edit" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
@@ -177,9 +178,9 @@
                  <div class="col-md-12">
                 <div class="bootstrap-timepicker">
                   <div class="form-group">
-                  <label class="form-control-label">End time <span class="input-mandatory">*</span></label> 
+                  <label class="form-control-label">End time <span class="input-mandatory">*</span></label>
                     <div class="input-group date timepicker1" id="end_time_edit" data-target-input="nearest">
-                    <input type="text" placeholder="12:00:00" id="edit-end-time" class="form-control datetimepicker-input datetimepicker" data-target="#end_time_edit" name="end_time"/>                   
+                    <input type="text" placeholder="12:00:00" id="edit-end-time" class="form-control datetimepicker-input datetimepicker" data-target="#end_time_edit" name="end_time"/>
                       <div class="input-group-append" data-target="#end_time_edit" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
@@ -189,39 +190,40 @@
                   </div>
                   <!-- /.form group -->
                 </div>
-                 </div> 
+                 </div>
                  <div class="col-md-12">
                   <div class="form-group">
-                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label> 
+                      <label class="form-control-label">Game Code <span class="input-mandatory">*</span></label>
                       <input type="text" id="edit-code" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" name="code" class="form-control" placeholder="code Ex 1234-1234-1234">
                       <span class="text-danger error-msg name"></span>
-                  </div> 
-              </div>                  
+                  </div>
+              </div>
                   </div>
             </div>
-            <div class="modal-footer">                                       
+            <div class="modal-footer">
                 <button type="button"  onclick="editgame()"class="btn btn-primary">Save</button>
-                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>           
+                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </form>
         </div>
     </div>
-  </div> 
+  </div>
   <script>
-    $(document).ready(function () {         
-      var table = $('#games-details-list').DataTable({         
+    $(document).ready(function () {
+      var table = $('#games-details-list').DataTable({
       processing: true,
       serverSide: true,
       responsive: false,
-    
+
       ajax: "{{ route('games.list') }}",
       columns: [
       { data: 'DT_RowIndex', name: 'id'},
       { data: 'name', name: 'name'},
-      { data: 'start_time', name: 'start_time'},  
-      { data: 'end_time', name: 'end_time'},  
-      { data: 'code', name: 'code'},  
-      { data: 'action', name: 'action', orderable: false},              
+      { data: 'start_time', name: 'start_time'},
+      { data: 'end_time', name: 'end_time'},
+      { data: 'code', name: 'code'},
+      { data: 'action', name: 'action', orderable: false},
+      { data: 'status', name: 'status', orderable: false},
       ],
     //   order: [[1, 'desc']]
       });
@@ -229,12 +231,47 @@
 </script>
 
 <script>
+    function changestatus(bid) {
+        Swal.fire({
+            title: 'Are you sure you want to change the status?',
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: 'Okay',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get the CSRF token from the meta tag
+                const csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    method: "POST",
+                    url: '{{ route("games.status") }}',
+                    data: {
+                        id: bid,
+                        // Include the CSRF token in the request data
+                        _token: csrfToken
+                    },
+                    success: function (data) {
+                        if (data.error == 1) {
+                        } else {
+                             $('#games-details-list').DataTable().draw();
+                            //location.reload();
+                        }
+                    },
+                });
+            } else if (result.isDenied) {
+                // Handle denied action
+            }
+        });
+    }
+  </script>
+
+
+<script>
 function get(cid){
     $.ajax({
         method : "get",
         url : '{{route("games.get")}}',
         data : {id:cid},
-        
+
         success: function(data){
             $('#add-games-id').val(data.id);
             $('#add-games').val(data.name);
@@ -269,7 +306,7 @@ function get(cid){
                $("#add-games-modal").modal('hide');
                appct.clearErrors("#add-games-modal");
                toastr.success(data.msg,'success');
-      
+
                $('#form-add-games')[0].reset();
                $('#games-details-list').DataTable().draw();
             }
@@ -352,16 +389,16 @@ function editgame(){
           success: function (data) {
              if (data.error == 1) {
               toastr.error(data.msg,'danger');
-               
+
              }else{
               toastr.success(data.msg,'success');
              console.log(toastr.success);
                 $('#games-details-list').DataTable().draw();
-             }          
+             }
           },
        });
     } else if (result.isDenied) {
-     
+
     }
  });
 }

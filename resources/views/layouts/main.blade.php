@@ -4,7 +4,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alpha Mataka</title>
+  <title>Dev Mataka</title>
 
   <style>
     .input-mandatory{
@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
   href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <link rel="stylesheet" href="{{asset('assets')}}/plugins/daterangepicker/daterangepicker.css">
@@ -84,7 +84,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">      
+      <li class="nav-item">
         <div class="navbar-search-block">
           <form class="form-inline">
             <div class="input-group input-group-sm">
@@ -103,7 +103,7 @@
       </li>
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
-     
+
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
@@ -157,7 +157,7 @@
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
- 
+
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -176,14 +176,14 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <!-- <img src="#" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-      <span class="brand-text font-weight-light">Alpha Mataka</span>
+      <span class="brand-text font-weight-light">Dev Mataka App</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      
+
         <div class="info">
         <div class="info">
           <a href="#" class="d-block"><p>Username : <b>{{auth()->user()->name}}</b></p></a>
@@ -192,14 +192,14 @@
       </div> -->
 
       <!-- SidebarSearch Form -->
-    
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-     
+
                @php
               $uicongfig['active'] = isset($uicongfig['active'])?$uicongfig['active']:"";
            @endphp
@@ -254,7 +254,7 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="#">Alpha Mataka</a>.</strong>
+    <strong>Copyright &copy; 2014-2021 <a href="#">Dev Mataka App</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
@@ -285,7 +285,7 @@
     }
         toastr.success("{{ session('success') }}");
     @endif
-  
+
     @if(Session::has('danger'))
     toastr.options =
     {
@@ -296,13 +296,13 @@
     @endif
 
   </script>
-  <script> 
+  <script>
  function printErrorMsg (msg,el) {
   $.each( msg, function( key, value ) {
   // console.log(key)
     $(el).find('.'+key+'').text(value);
   })
-  
+
 }
 </script>
 <script>

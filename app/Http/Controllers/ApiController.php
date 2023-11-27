@@ -27,64 +27,75 @@ class ApiController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['status' => false, 'message' => 'Validation Error..', "errros" =>  $validator->errors()]);
+            return response()->json(['status' => false, 'message' => 'Validation Error..', "errors" =>  $validator->errors()]);
         }
 
         $user = User::where('phone', $request->phone)->first();
 
         if ($user) {
-            if (Hash::check($request->password, $user->password)) {
-                if ($request->fcmtoken) {
-                    $user->fcmtoken = $request->fcmtoken;
-                    $user->save();
-                }
+            if ($user->status == 0) {
+                // User status is 0 (active)
+                if (Hash::check($request->password, $user->password)) {
+                    if ($request->fcmtoken) {
+                        $user->fcmtoken = $request->fcmtoken;
+                        $user->save();
+                    }
 
+                    return [
+                        'data' => $user,
+                        'status' => true,
+                        'message' => 'Successfully Login'
+                    ];
+                } else {
+                    return [
+                        'data' => '',
+                        'status' => false,
+                        'message' => 'Invalid Password'
+                    ];
+                }
+            } else {
+                // User status is 1 (disabled)
                 return [
-                    'data' => $user,
-                    'status' => true,
-                    'message' => 'Successfully Login'
+                    'data' => '',
+                    'status' => false,
+                    'message' => 'User is disabled. Please contact support.'
                 ];
             }
+        } else {
             return [
                 'data' => '',
                 'status' => false,
-                'message' => 'Invalid Password'
+                'message' => 'Invalid phone'
             ];
         }
-        return [
-            'data' => '',
-            'status' => false,
-            'message' => 'Invalid phone'
-        ];
     }
-
     //register api
 
     public function register(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        
+
         'name' => 'required|string|max:255|unique:users',
         'email' => 'required|string|email|max:255',
         'phone' => 'required|numeric|digits_between:6,14|unique:users',
         'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
-       
+
     ]);
-  
+
 
     if ($validator->fails()) {
         return response()->json(['error' => $validator->errors(),'status'=>false], 400);
     }
 
     $user = User::create([
-       
+
         'name' => $request->input('name'),
          'email' => $request->input('email'),
         'phone' => $request->input('phone'),
         'password' => Hash::make($request->input('password')),
         'mpin' => $request->input('mpin'),
 
-        
+
     ]);
     return response()->json(['message' => 'Registration successful','status'=>true], 201);
 
@@ -109,7 +120,7 @@ public function logout(Request $request)
     }
 }
 
-   
+
 public function updateprofile(Request $request)
 {
     // Validation rules for name and email, excluding the 'phone' field
@@ -136,7 +147,7 @@ public function updateprofile(Request $request)
 }
 
 
-   
+
 
     // public function generate(Request $request)
     // {
@@ -157,7 +168,7 @@ public function updateprofile(Request $request)
     //         'otp' => $otp
     //     ]);
     // }
-    
+
     // public function generateOtp(Request $request)
     // {
     //     $phone = $request->input('phone');
@@ -210,7 +221,7 @@ public function myprofile($id)
 
 
 
-//old pass throw change password 
+//old pass throw change password
 public function changePassword(Request $request, $id)
     {
         $user = User::find($id);
@@ -248,14 +259,14 @@ public function participate(Request $request ,$id)
 
      {
         // Find the user by their id in the users table
-        $user = User::find($id);        
+        $user = User::find($id);
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        
+
         $participation = typegames::create([
-       
+
             'game_id' => $request->input('game_id'),
              'type' => $request->input('type','Empty'),
             'date' => $request->input('date'),
@@ -263,10 +274,10 @@ public function participate(Request $request ,$id)
             'close_digit' =>$request->input('close_digit','Empty'),
             'session_type' => $request->input('session_type','Empty'),
             'point' => $request->input('point'),
-            'user_id' => $user->id, 
+            'user_id' => $user->id,
         ]);
         return response()->json(['message' => 'Registration successful','status'=>true], 201);
-    }  
+    }
 }
 //wallet se related
 
@@ -289,7 +300,7 @@ public function addpoint(Request $request,$id){
             // 'amount' => $request->input('amount'),
         ]);
         return response()->json(['message' => 'new point successfully added', 'status' => true], 201);
-    } 
+    }
 
     }
 
@@ -353,25 +364,25 @@ public function withdrawPointsForhistory($userId){
 public function gamestore(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        
+
         'name' => 'required|max:255|unique:games',
         'start_time' => 'required',
         'end_time' => 'required|',
         'code'=> 'required|unique:games',
-        
+
     ]);
-  
+
     if ($validator->fails()) {
         return response()->json(['error' => $validator->errors(),'status'=>false], 400);
     }
 
     $gm = Games::create([
-       
+
         'name' => $request->input('name'),
         'start_time' => $request->input('start_time'),
         'end_time' => $request->input('end_time'),
         'code' => $request->input('code'),
-        
+
     ]);
     return response()->json(['message' => 'Games successfully added','status'=>true], 200);
 
@@ -380,7 +391,7 @@ public function gamestore(Request $request)
 
 public function getAllGames()
     {
-        $games = Games::paginate(5);
+        $games = Games::where('status', 1)->paginate(5);
 
         if ($games->isEmpty()) {
             return response()->json(['message' => 'No games found']);
@@ -403,7 +414,7 @@ public function getAllGames()
 //     $gm = Games::find($id);
 
 //     if (!$gm) {
-        
+
 //         return response()->json(['message' => 'record not found'], 404);
 //     }
 

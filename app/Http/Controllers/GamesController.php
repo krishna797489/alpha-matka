@@ -16,7 +16,7 @@ class GamesController extends Controller
     'title' => "Games",
     'header' => "Games",
     'active' => "games",
-];  
+];
     return view('games.index',compact('uicongfig'));
  }
 
@@ -28,29 +28,54 @@ class GamesController extends Controller
  }
 
  public function list(Request $request)
+{
+    if (!$request->ajax()) {
+        return response()->json([
+            "status" => "fail",
+            "message" => "Bad Request."
+        ], 401);
+    }
+
+    $list =Games::get();
+
+    return datatables($list)
+        ->addIndexColumn()
+        ->addColumn('status', function ($row) {
+            if ($row->status) {
+                return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus(' . $row->id . ', 0)">Disable</button>';
+            } else {
+                return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus(' . $row->id . ', 1)">Enable</button>';
+            }
+        })
+        ->addColumn('action', function ($row) {
+            return '<button type="button" onclick="edit(' . $row->id . ')" class="btn btn-outline-info btn-sm mr-p5"><i class="fa fa-edit" aria-hidden="true"></i></button>
+            <button type="button" onclick="gamedeleted(' . $row->id . ')" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt" aria-hidden="true"></i></button>';
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
+}
+
+public  function status(Request $request)
  {
- // echo"<pre>";print_r($request->All());exit;
-     if (!$request->ajax()) {
-         return response()->json([
-           "status" => "fail",
-           "message" => "Bad Request."
-         ], 401);
-       }
-   
-       $list = Games::where('isDeleted',0)->get();
-       return datatables($list)
-         ->addIndexColumn()
-         ->addColumn('action', function ($row) {          
-           return '<button type="button"  onclick="edit(' . ($row->id) . ')" class="btn btn-outline-info btn-sm mr-p5"><i class="fa fa-edit" aria-hidden="true"></i></button>
-           <button type="button" onclick="gamedeleted(' . ($row->id) . ')"class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt" aria-hidden="true"></i></button>';
-         })
-         ->rawColumns(['action'])
-         ->make(true); 
-  //echo"<pre>";print_r($list);exit;
-
-
+   $user =Games::where('id',$request->id)->first();
+   if ($user) {
+     if ($user->status) {
+       $user->status = 0;
+     } else {
+       $user->status = 1;
+     }
+     $user->save();
+     return response()->json(array(
+       'error' => 0,
+       'msg' => "Groups status has been changed successfully."
+     ), 200);
+   } else {
+     return response()->json(array(
+       'error' => 1,
+       'msg' => "Groups status failed to change."
+     ), 200);
+   }
  }
-
 
  public function store(Request $request)
  {
@@ -63,14 +88,14 @@ class GamesController extends Controller
     'code' => [
       'required',
       'regex:/^\d{4}-\d{4}-\d{4}$/',
-      
+
   ],
   ], [
     'name.required' => 'The name field is required.',
     'start_time.required' => 'The start time field is required.',
     'end_time.required' => 'The end time field is required.',
-    'end_time.after' => 'The end time must be after the start time.', 
-    'code.required' => 'The code is enter 1234-1234-1234.', 
+    'end_time.after' => 'The end time must be after the start time.',
+    'code.required' => 'The code is enter 1234-1234-1234.',
 ]);
      if ($validator->fails()) {
          return response()->json(array(
@@ -97,7 +122,7 @@ class GamesController extends Controller
            ), 200);
          }
         // echo"<pre>";print_r($games);exit;
-       
+
  }
 
 
@@ -110,13 +135,13 @@ class GamesController extends Controller
         'code' => [
           'required',
           'regex:/^\d{4}-\d{4}-\d{4}$/',
-          
+
       ],
     ], [
         'name.required' => 'The name field is required.',
         'start_time.required' => 'The start time field is required.',
         'end_time.required' => 'The end time field is required.',
-        'end_time.after' => 'The end time must be after the start time.', 
+        'end_time.after' => 'The end time must be after the start time.',
     ]);
         if ($validator->fails()) {
             return response()->json(array(
@@ -161,4 +186,4 @@ class GamesController extends Controller
     }
 }
 
- 
+

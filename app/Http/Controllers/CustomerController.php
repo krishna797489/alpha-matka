@@ -17,7 +17,7 @@ class CustomerController extends Controller
         'title' => "Customer",
         'header' => "Customer",
         'active' => "customer",
-    ];  
+    ];
         return view('customer.index',compact('uicongfig'));
      }
      public function get($id){
@@ -25,36 +25,61 @@ class CustomerController extends Controller
         return view('customer.update',compact('cust'));
       }
      public function list(Request $request)
- {
+    {
      if (!$request->ajax()) {
          return response()->json([
            "status" => "fail",
            "message" => "Bad Request."
          ], 401);
        }
-   
-       $list = Customer::where('isDeleted',0)->get();
+
+       $list = Customer::where('usertype', 1)->get();
+
        return datatables($list)
          ->addIndexColumn()
-         ->addColumn('action', function ($row) {          
-            return '<a href="'.route('customer.get',($row->id)).'" class="btn btn-outline-info btn-sm mr-p5"><i class="fa fa-edit" aria-hidden="true"></i></a>
-            <button type="button" onclick="customerdeleted(' . ($row->id) . ')" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt" aria-hidden="true"></i></button>';
-          })
-         ->addColumn('image', function (Customer $image) {
-            return '<img src="' . asset('upload/image/' . $image->image) . '" alt="Image" width="100">';
+         ->addColumn('status', function ($row) {
+          if ($row->status) {
+
+            return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus('.($row->id).')">Disable</button>';
+          } else {
+            return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus('.($row->id).')">Enable</button>';
+          }
         })
-         ->rawColumns(['action','image'])
-         ->make(true); 
+        ->rawColumns(['status'])
+         ->make(true);
  }
 
+ public  function status(Request $request)
+ {
+   $user = Customer::where('id',$request->id)->first();
+   if ($user) {
+     if ($user->status) {
+       $user->status = 0;
+     } else {
+       $user->status = 1;
+     }
+     $user->save();
+     return response()->json(array(
+       'error' => 0,
+       'msg' => "Groups status has been changed successfully."
+     ), 200);
+   } else {
+     return response()->json(array(
+       'error' => 1,
+       'msg' => "Groups status failed to change."
+     ), 200);
+   }
+ }
+
+
  public function add(){
-    
+
     return view('customer.add');
   }
 
   public function create(Request $request)
-  {  
-          
+  {
+
       $validator = Validator::make($request->all(), [
           'name' => 'required',
           // 'username' => 'required|unique:users',
@@ -63,11 +88,11 @@ class CustomerController extends Controller
             if (!in_array(strtolower($ext),['jpeg','png','jpg','gif','svg'])) {
                 $fail('Only jpeg,png,jpg,gif,svg file supported.');
             }}],
-          'email' => 'required|max:50|regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/i',         
+          'email' => 'required|max:50|regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/i',
           'phone' => 'required|numeric|digits_between:6,14|',
           'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
       ], [
-     
+
       'password.regex' => 'The password  must be have at least 8 characters long 1 uppercase & 1 lowercase character 1 number. . ',
       'phone.required' => 'The phone no field is required.',
       'phone.numeric' => 'The phone no must be a number.',
@@ -81,10 +106,10 @@ class CustomerController extends Controller
   }
      //echo "<pre>"; print_r($request->all()); exit;
       $data = $request->all();
-     
-      
+
+
       // $ext = ($request->filename->getClientOriginalName());
-      
+
       $fileName = time().'.'.$request->image->getClientOriginalName();
       //echo "<pre>"; print_r($fileName); exit;
       // $filename =$request->id.rand(1000,9999).'t'.time().'.'.$ext;
@@ -105,7 +130,7 @@ class CustomerController extends Controller
       }else{
           return redirect()->route('customer.index')->with('danger','customer failed to create.');
       }
-      
+
       }
 
 
@@ -188,6 +213,6 @@ public function update(Request $request)
           ), 200);
         }
       }
-   
-     
+
+
 }
