@@ -19,7 +19,7 @@
   </style>
   <!-- Google Font: Source Sans Pro -->
 
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css"
@@ -74,11 +74,9 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Home</a>
+        <a href="{{route('dashboard')}}" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+
     </ul>
 
     <!-- Right navbar links -->
@@ -174,7 +172,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="{{route('dashboard')}}" class="brand-link">
       <!-- <img src="#" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
       <span class="brand-text font-weight-light">Dev Mataka App</span>
     </a>
@@ -229,6 +227,52 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link {{($uicongfig['active'] == '')?'active':'Games & Number'}}">
+                <i class="fa fa-gamepad"></i> Games & Number
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.games') }}">Single Digit</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.JodiDigit') }}">Jodi Digit</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.SinglePana') }}">Single Pana</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.DoublePana') }}">Double Pana</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.TripplePana') }}">Tripple Pana</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.HalfSangamNumbers') }}">Half Sangam</a>
+                </ul>
+            </ul>
+            <ul class="nav child_menu" style="display: close;">
+                <ul>
+                    <a href="{{ route('types.FullSangam') }}">Full Sangam</a>
+                </ul>
+            </ul>
+        </li>
+
+
+
+
 
           <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
@@ -367,6 +411,6 @@ $(document).ready(function () {
 <script src="{{asset('assets')}}/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
 <script src="{{asset('assets')}}/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

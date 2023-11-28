@@ -37,6 +37,15 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //games route
 Route::get('/games', [GamesController::class, 'index'])->name('games.index');
+
+Route::get('/games/typegame', [GamesController::class, 'typegames'])->name('types.games');
+Route::get('/games/JodiDigit', [GamesController::class, 'JodiDigit'])->name('types.JodiDigit');
+Route::get('/games/SinglePana', [GamesController::class, 'SinglePana'])->name('types.SinglePana');
+Route::get('/games/DoublePana', [GamesController::class, 'DoublePana'])->name('types.DoublePana');
+Route::get('/games/TripplePana', [GamesController::class, 'TripplePana'])->name('types.TripplePana');
+Route::get('/games/HalfSangamNumbers',[GamesController::class, 'HalfSangamNumbers'])->name('types.HalfSangamNumbers');
+Route::get('/games/FullSangam',[GamesController::class, 'FullSangam'])->name('types.FullSangam');
+
 Route::get('/games/list', [GamesController::class, 'list'])->name('games.list');
 Route::get('/games/get', [GamesController::class, 'get'])->name('games.get');
 Route::post('/games/add', [GamesController::class, 'store'])->name('games.store');

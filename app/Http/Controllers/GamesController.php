@@ -19,8 +19,62 @@ class GamesController extends Controller
 ];
     return view('games.index',compact('uicongfig'));
  }
-
-
+ public function typegames(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.typesgame',compact('typesgames'));
+ }
+ public function JodiDigit(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_jodi_digit',compact('typesgames'));
+ }
+ public function SinglePana(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_Single_Pana',compact('typesgames'));
+ }
+public function DoublePana(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_DoublePana',compact('typesgames'));
+}
+public function TripplePana(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_Tripple_Pana',compact('typesgames'));
+}
+public function HalfSangamNumbers(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_Half_Sangam_Numbers',compact('typesgames'));
+}
+public function FullSangam(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.type_Full_Sangam',compact('typesgames'));
+}
  public function get(Request $request)
  {
   //echo"<pre>";print_r($request->All());exit;
