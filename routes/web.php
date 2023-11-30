@@ -46,6 +46,11 @@ Route::get('/games/TripplePana', [GamesController::class, 'TripplePana'])->name(
 Route::get('/games/HalfSangamNumbers',[GamesController::class, 'HalfSangamNumbers'])->name('types.HalfSangamNumbers');
 Route::get('/games/FullSangam',[GamesController::class, 'FullSangam'])->name('types.FullSangam');
 
+Route::get('/games/Gamesrated',[GamesController::class, 'Gamesrated'])->name('types.Gamesrated');
+Route::post('/games/Gamesratedupdate',[GamesController::class, 'Gamesratedpost'])->name('types.Gamesratedpost');
+Route::get('/games/showGamesrated',[GamesController::class, 'showGamesrated'])->name('types.showGamesrated');
+
+
 Route::get('/games/list', [GamesController::class, 'list'])->name('games.list');
 Route::get('/games/get', [GamesController::class, 'get'])->name('games.get');
 Route::post('/games/add', [GamesController::class, 'store'])->name('games.store');

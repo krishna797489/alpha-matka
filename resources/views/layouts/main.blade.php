@@ -229,46 +229,37 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link {{($uicongfig['active'] == '')?'active':'Games & Number'}}">
+            <a  class="nav-link {{ ($uicongfig['active'] == 'Games & Number') ? 'active' : '' }}" data-toggle="collapse" href="#gamesCollapse">
                 <i class="fa fa-gamepad"></i> Games & Number
                 <span class="fa fa-chevron-down"></span>
             </a>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.games') }}">Single Digit</a>
+            <div class="collapse" id="gamesCollapse">
+                <ul class="nav child_menu" style="flex-direction: column;position: relative; margin-left: 5vh;list-style: circle; color: white">
+                    <li><a href="{{ route('types.games') }}">Single Digit</a></li>
+                    <li><a href="{{ route('types.JodiDigit') }}">Jodi Digit</a></li>
+                    <li><a href="{{ route('types.SinglePana') }}">Single Pana</a></li>
+                    <li><a href="{{ route('types.DoublePana') }}">Double Pana</a></li>
+                    <li><a href="{{ route('types.TripplePana') }}">Tripple Pana</a></li>
+                    <li><a href="{{ route('types.HalfSangamNumbers') }}">Half Sangam</a></li>
+                    <li><a href="{{ route('types.FullSangam') }}">Full Sangam</a></li>
                 </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.JodiDigit') }}">Jodi Digit</a>
-                </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.SinglePana') }}">Single Pana</a>
-                </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.DoublePana') }}">Double Pana</a>
-                </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.TripplePana') }}">Tripple Pana</a>
-                </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.HalfSangamNumbers') }}">Half Sangam</a>
-                </ul>
-            </ul>
-            <ul class="nav child_menu" style="display: close;">
-                <ul>
-                    <a href="{{ route('types.FullSangam') }}">Full Sangam</a>
-                </ul>
-            </ul>
+            </div>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesCollapsing" role="button">
+                <i class="fa fa-gamepad"></i> Games Management
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesCollapsing">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="#">Game Name</a></li>
+                    <li><a href="{{route('types.Gamesrated')}}">Game Rates</a></li>
+                </ul>
+            </div>
+        </li>
+
+
 
 
 

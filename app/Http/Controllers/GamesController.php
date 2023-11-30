@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Games;
+use App\Gamesrated;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -81,6 +82,95 @@ public function FullSangam(){
      return Games::where('id',$request->id)->first();
  }
 
+ public function Gamesrated(){
+    $typesgames=[
+        'title' => "Typegames",
+    'header' => "Typegames",
+    'active' => "typegames",
+    ];
+    return view('games.games_rates',compact('typesgames'));
+ }
+ public function Gamesratedpost(Request $request){
+
+    $validator = Validator::make($request->all(), [
+        'single_digit1' => 'required',
+        'single_digit2' => 'required',
+        'Jodi_Digit1' => 'required',
+        'Jodi_Digit2' => 'required',
+        'Single_Pana1' => 'required',
+        'Single_Pana2' => 'required',
+        'Double_Pana1' => 'required',
+        'Double_Pana2' => 'required',
+        'Tripple_Pana1' => 'required',
+        'Tripple_Pana2' => 'required',
+        'Half_Sangam1' => 'required',
+        'Half_Sangam2' => 'required',
+        'Full_Sangam1' => 'required',
+        'Full_Sangam2' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    // Retrieve the old customer data
+    $games = Gamesrated::where('id', $request->id)->first();
+
+    // Handle the image upload
+
+
+    // Update other customer information
+    $games->single_digit1 = $request->single_digit1;
+    $games->single_digit2 = $request->single_digit2;
+    $games->Jodi_Digit1 = $request->Jodi_Digit1;
+    $games->Jodi_Digit2 = $request->Jodi_Digit2;
+    $games->Single_Pana1 = $request->Single_Pana1;
+    $games->Single_Pana2 = $request->Single_Pana2;
+    $games->Double_Pana1 = $request->Double_Pana1;
+    $games->Double_Pana2 = $request->Double_Pana2;
+    $games->Tripple_Pana1 = $request->Tripple_Pana1;
+    $games->Tripple_Pana2 = $request->Tripple_Pana2;
+    $games->Half_Sangam1 = $request->Half_Sangam1;
+    $games->Half_Sangam2 = $request->Half_Sangam2;
+    $games->Full_Sangam1 = $request->Full_Sangam1;
+    $games->Full_Sangam2 = $request->Full_Sangam2;
+
+
+    // Save the updated customer information
+    if ($games->save()) {
+        return redirect()->route('types.Gamesrated')->with('success', 'Customer has been updated successfully.');
+    } else {
+        return redirect()->route('types.Gamesrated')->with('danger', 'Customer failed to update.');
+    }
+
+ }
+ public function showGamesrated(Request $request)
+    {
+        if (!$request->ajax()) {
+            return response()->json([
+                "status" => "fail",
+                "message" => "Bad Request."
+            ], 401);
+        }
+
+        $list =Games::get();
+       return datatables($list)
+         ->addIndexColumn()
+         ->addColumn('status', function ($row) {
+          if ($row->status) {
+
+            return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus('.($row->id).')">Disable</button>';
+          } else {
+            return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus('.($row->id).')">Enable</button>';
+          }
+        })
+        ->rawColumns(['status'])
+         ->make(true);
+
+    }
  public function list(Request $request)
 {
     if (!$request->ajax()) {
