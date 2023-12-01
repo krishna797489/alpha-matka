@@ -56,10 +56,36 @@
   <link rel="stylesheet" href="{{asset('assets')}}/plugins/summernote/summernote-bs4.min.css">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{asset('assets')}}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+{{--  --}}
+  {{-- <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .section {
+        width: 100%;
+        max-width: 1200px; /* Adjust as needed */
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .section {
+            padding: 10px;
+            width: 10px;
+        }
+    }
+</style> --}}
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+
+
+
+<body class="hold-transition sidebar-mini layout-fixed" style="width: 100vw;height: 100vh">
+<div class="wrapper" >
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
@@ -203,34 +229,20 @@
            @endphp
           <li class="nav-item">
             <a href="{{route('dashboard')}}" class="nav-link {{($uicongfig['active'] == 'dashboard')?'active':''}}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="fa fa-home"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
 
-          <li class="nav-item">
-            <a href="{{route('games.index')}}" class="nav-link {{($uicongfig['active'] == 'games')?'active':''}}">
-              <i class="nav-icon fas fa-gamepad"></i>
-              <p>
-                Games
-              </p>
-            </a>
-          </li>
 
-          <li class="nav-item">
-            <a href="{{route('customer.index')}}" class="nav-link {{($uicongfig['active'] == 'customer')?'active':''}}">
-              <i class="nav-icon 	fas fa-users"></i>
-              <p>
-                Customer
-              </p>
-            </a>
-          </li>
+
+
 
           <li class="nav-item">
             <a  class="nav-link {{ ($uicongfig['active'] == 'Games & Number') ? 'active' : '' }}" data-toggle="collapse" href="#gamesCollapse">
-                <i class="fa fa-gamepad"></i> Games & Number
+                <i class="fa fa-hashtag"></i> Games & Number
                 <span class="fa fa-chevron-down"></span>
             </a>
             <div class="collapse" id="gamesCollapse">
@@ -253,8 +265,47 @@
             </a>
             <div class="collapse" id="gamesCollapsing">
                 <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="#">Game Name</a></li>
+                    <li><a href="{{route('games.index')}}">Game Name</a></li>
                     <li><a href="{{route('types.Gamesrated')}}">Game Rates</a></li>
+                    <li><a href="{{route('howtoplay')}}">How To Play</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesColl" role="button">
+                <i class="fa fa-user"></i> User Managment
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesColl">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="{{route('customer.index')}}">User Managment</a></li>
+
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesCol" role="button">
+                <i class="fa fa-bug"></i> Starline Game
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesCol">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="#">Game name</a></li>
+                    <li><a href="#">Starline Rates</a></li>
+
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesCo" role="button">
+                <i class="fa-google-wallet"></i> Withdraw Managment<span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesCo">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="#">Withdraw Request</a></li>
+                    <li><a href="#">User Wallet Management</a></li>
+                    <li><a href="#">Auto Deposit</a></li>
+
                 </ul>
             </div>
         </li>

@@ -43,6 +43,8 @@
                       <th>Mpin</th>
                       <th>created_at</th>
                       <th>Action</th>
+                      <th>View</th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -78,7 +80,7 @@
       { data: 'mpin', name: 'mpin'},
       { data: 'created_at', name: 'created_at'},
       { data: 'status', name: 'status'},
-    //   {data: 'action', name: 'action', orderable: false},
+      {data: 'action', name: 'action', orderable: false},
       ],
     //   order: [[1, 'desc']]
       });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Games;
 use App\Gamesrated;
+use App\howToPlayFrm;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -171,6 +172,52 @@ public function FullSangam(){
          ->make(true);
 
     }
+
+    public function howtoplay(){
+        $typesgames=[
+            'title' => "Typegames",
+        'header' => "Typegames",
+        'active' => "typegames",
+        ];
+        return view('games.game_how_play',compact('typesgames'));
+    }
+    public function howtoplaypost(Request $request){
+        $rules = [
+            'description' => 'required',
+            'video_link' => 'required|url',
+        ];
+
+        // Custom validation error messages
+        $messages = [
+            'video_link.url' => 'The video link must be a valid URL.',
+        ];
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect('games.game_how_play')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $games = new howToPlayFrm();
+        $games->description = $request->description;
+        $games->video_link = $request->video_link;
+        if ($games->save()) {
+            // If the data is saved successfully, pass a success flag to the view
+            return view('games.game_how_play')->with('success', true);
+        } else {
+            return view('games.game_how_play')->with('error', true);
+        }
+    }
+    public function howtoplaypostget(){
+        $list = howToPlayFrm::latest()->select('description', 'video_link')->first();
+
+        return response()->json([
+            'data' => $list,
+        ]);    }
  public function list(Request $request)
 {
     if (!$request->ajax()) {

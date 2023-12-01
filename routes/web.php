@@ -37,7 +37,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //games route
 Route::get('/games', [GamesController::class, 'index'])->name('games.index');
-
+//types games
 Route::get('/games/typegame', [GamesController::class, 'typegames'])->name('types.games');
 Route::get('/games/JodiDigit', [GamesController::class, 'JodiDigit'])->name('types.JodiDigit');
 Route::get('/games/SinglePana', [GamesController::class, 'SinglePana'])->name('types.SinglePana');
@@ -45,12 +45,16 @@ Route::get('/games/DoublePana', [GamesController::class, 'DoublePana'])->name('t
 Route::get('/games/TripplePana', [GamesController::class, 'TripplePana'])->name('types.TripplePana');
 Route::get('/games/HalfSangamNumbers',[GamesController::class, 'HalfSangamNumbers'])->name('types.HalfSangamNumbers');
 Route::get('/games/FullSangam',[GamesController::class, 'FullSangam'])->name('types.FullSangam');
+//games how to play
+Route::get('/games/howtoplay',[GamesController::class, 'howtoplay'])->name('howtoplay');
+Route::post('/games/howtoplaypost',[GamesController::class, 'howtoplaypost'])->name('howtoplaypost');
 
+//games rates
 Route::get('/games/Gamesrated',[GamesController::class, 'Gamesrated'])->name('types.Gamesrated');
 Route::post('/games/Gamesratedupdate',[GamesController::class, 'Gamesratedpost'])->name('types.Gamesratedpost');
 Route::get('/games/showGamesrated',[GamesController::class, 'showGamesrated'])->name('types.showGamesrated');
 
-
+//games relate delete update status
 Route::get('/games/list', [GamesController::class, 'list'])->name('games.list');
 Route::get('/games/get', [GamesController::class, 'get'])->name('games.get');
 Route::post('/games/add', [GamesController::class, 'store'])->name('games.store');
@@ -60,6 +64,9 @@ Route::post('/games/status', [GamesController::class, 'status'])->name('games.st
 
 //customer route
 Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+
+Route::get('employees/{id}', [CustomerController::class, 'viewdetail'])->name('viewdetail');
+
 Route::get('/customer/add', [CustomerController::class, 'add'])->name('customer.add');
 Route::post('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
 Route::get('/customer/list', [CustomerController::class, 'list'])->name('customer.list');

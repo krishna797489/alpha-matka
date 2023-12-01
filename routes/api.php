@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CustomerApiController;
-
+use App\Http\Controllers\GamesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ Route::post('updateprofile/{id}', [ApiController::class,'updateprofile']);
 
 Route::post('/varify-mobile', [ApiController::class, 'verifyMobile']);
 Route::get('profile/{id}', [ApiController::class, 'myprofile']);
-Route::post('changePassword/{id}',[ApiController::class,'changePassword']); //old pass throw change password 
+Route::post('changePassword/{id}',[ApiController::class,'changePassword']); //old pass throw change password
 
 Route::post('generate-otp', [ApiController::class,'generate']);
 Route::post('generate-otp', [ApiController::class,'generateOtp']);
@@ -54,6 +54,7 @@ Route::get('withdrawPointsForhistory/{user_id}', [ApiController::class, 'withdra
 Route::get('pointwithdraw/{user_id}', [ApiController::class, 'pointwithdraw']);
 
 //games Api
+Route::get('howtoplaypostget', [GamesController::class,'howtoplaypostget']);
 Route::post('gamestore', [ApiController::class,'gamestore']);
 Route::post('gamesupdate/{id}', [ApiController::class,'gamesupdate']);
 Route::get('/getgames', [ApiController::class, 'getAllGames']);

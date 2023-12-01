@@ -24,6 +24,17 @@ class CustomerController extends Controller
         $cust = Customer::find($id);
         return view('customer.update',compact('cust'));
       }
+
+      public function viewdetail(Request $request ,$id){
+//echo"<pre>";print_r($id);exit;
+$item =Customer::where('id',$request->id)->first();
+//echo"<pre>";print_r($employee);exit;
+
+    //    / $employee = Customer::where('usertype', 1)->find($id )->first();
+       return view('customer.customer_view',compact('item'));
+
+      }
+
      public function list(Request $request)
     {
      if (!$request->ajax()) {
@@ -38,6 +49,7 @@ class CustomerController extends Controller
        return datatables($list)
          ->addIndexColumn()
          ->addColumn('status', function ($row) {
+
           if ($row->status) {
 
             return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus('.($row->id).')">Disable</button>';
@@ -45,9 +57,26 @@ class CustomerController extends Controller
             return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus('.($row->id).')">Enable</button>';
           }
         })
-        ->rawColumns(['status'])
+        ->addColumn('action', function ($row) {
+            return '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm mr-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
+        })
+
+         ->addColumn('email', function ($row) {
+            return $row->email ? $row->email : 'No Email';
+        })
+        ->addColumn('phone', function ($row) {
+            return $row->phone ? $row->phone : 'No Phone no';
+        })
+        ->addColumn('mpin', function ($row) {
+            return $row->mpin ? $row->mpin : 'No Mpin';
+        })
+        ->rawColumns(['status','action'])
          ->make(true);
  }
+    public function customerDetail(){
+        return view('customer.customer_view');
+
+    }
 
  public  function status(Request $request)
  {
