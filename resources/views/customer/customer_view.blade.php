@@ -36,6 +36,7 @@
                 <!-- /.card-header -->
                 {{-- <div class="card-body"> --}}
                   <table class="table table-bordered table-striped" id="customer-details-list">
+                   
 
                     <thead>
 
@@ -66,8 +67,17 @@
                             <td>Security Pin</td>
                             <td><span id="security_pin_text">{{$item->mpin}}</span> <button class="btn btn-primary btn-sm" id="changePin">Change</button></td>
                             <td>User Status</td>
-                            <td><badge class="badge badge-primary">{{$item->status}}</badge></td>
-                        </tr>
+                            <td>
+                                @if($item->status == 1)
+                                    <span class="badge badge-primary">Active</span>
+                                @elseif($item->status == 0)
+                                    <span class="badge badge-danger">Closed</span>
+                                @else
+                                    <!-- Handle other cases if needed -->
+                                    <span class="badge badge-secondary">Unknown Status</span>
+                                @endif
+                            </td>
+                         </tr>
                         <tr>
                             <td>Flat/Plot No.</td>
                             <td>N/A</td>

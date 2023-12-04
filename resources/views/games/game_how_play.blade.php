@@ -47,12 +47,18 @@
                         @csrf
                           <div class="form-group">
                               <label>How To Play Content</label>
-                              <textarea class="form-control textarea1" name="description" required rows="10" >
+                              <textarea class="form-control textarea1" name="description"    rows="10" >
+                                @if ($errors->has('description'))
+                                  <div class="text-danger">{{ $errors->first('description') }}</div>
+                                @endif
                                 </textarea>
                           </div>
                           <div class="form-group">
                               <label for="exampleInputEmail1">Video Link</label>
                               <input type="text" required name="video_link" id="video_link" class="form-control" placeholder="Enter Video Link"/>
+                              @if ($errors->has('video_link'))
+                                  <div class="text-danger">{{ $errors->first('video_link') }}</div>
+                                @endif
                           </div>
                           <div class="form-group">
                               <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn">Submit</button>

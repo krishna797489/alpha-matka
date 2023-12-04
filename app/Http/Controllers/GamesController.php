@@ -182,29 +182,29 @@ public function FullSangam(){
         return view('games.game_how_play',compact('typesgames'));
     }
     public function howtoplaypost(Request $request){
-        $rules = [
-            'description' => 'required',
-            'video_link' => 'required|url',
-        ];
 
-        // Custom validation error messages
-        $messages = [
-            'video_link.url' => 'The video link must be a valid URL.',
-        ];
+  $validator = Validator::make($request->all(), [
+    'description' => 'required',
+    'video_link' => 'required|url',
 
-        // Validate the request data
-        $validator = Validator::make($request->all(), $rules, $messages);
 
-        // Check if the validation fails
-        if ($validator->fails()) {
-            return redirect('games.game_how_play')
-                ->withErrors($validator)
-                ->withInput();
-        }
+  ], [
+    'description.required' => 'The description field is required.',
+    'video_link.required' => 'The url is valid.',
 
+]);
+if ($validator->fails()) {
+    return redirect()
+    ->back()
+    ->withErrors($validator)
+    ->withInput();
+}
+
+        // If validation passes, proceed to save the data
         $games = new howToPlayFrm();
-        $games->description = $request->description;
+        $games-> description= $request->description;
         $games->video_link = $request->video_link;
+
         if ($games->save()) {
             // If the data is saved successfully, pass a success flag to the view
             return view('games.game_how_play')->with('success', true);
