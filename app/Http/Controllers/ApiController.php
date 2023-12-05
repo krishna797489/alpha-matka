@@ -76,21 +76,19 @@ class ApiController extends Controller
     $validator = Validator::make($request->all(), [
 
         'name' => 'required|string|max:255|unique:users',
-        'email' => 'required|string|email|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
         'phone' => 'required|numeric|digits_between:6,14|unique:users',
         'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
 
     ]);
 
 
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors(),'status'=>false], 400);
-    }
+
 
     $user = User::create([
 
         'name' => $request->input('name'),
-         'email' => $request->input('email'),
+        'email' => $request->input('email'),
         'phone' => $request->input('phone'),
         'password' => Hash::make($request->input('password')),
         'mpin' => $request->input('mpin'),

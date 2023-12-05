@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
+use App\history;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -243,5 +246,28 @@ public function update(Request $request)
         }
       }
 
+
+      public function addpoint(Request $request,$id){
+        $user = User::find($id);
+
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'status' => false], 404);
+        }
+        $time =Carbon::now();
+        if ($user) {
+            // Agar user_id ke sath ek record mil gaya, to use update karein
+            history::create([
+                'user_id' => $user->id,
+                'payment_type' => $request->input('payment_type','admin'),
+                'point' => $request->input('point'),
+                'time' =>Carbon::now(),
+                'type' => $request->input('type','0'),
+                // 'amount' => $request->input('amount'),
+            ]);
+            return response()->json(['message' => 'new point successfully added', 'status' => true], 201);
+        }
+
+        }
 
 }

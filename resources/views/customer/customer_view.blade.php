@@ -23,6 +23,79 @@
 
     <!-- Main content -->
     <section class="content">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-fund-modal"><i class="fa fa-plus-circle"></i>
+            Add fund</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-withdraw-modal"><i class="fa fa-plus-circle"></i>
+                Withdraw Fund</button>
+
+
+    {{-- model open --}}
+    <div class="modal fade" id="add-fund-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                  <h4 class="modal-title">Add Fund</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('customer.addpoint')}}" method="post" id="form-add-games">
+                        <input type="hidden" id="add-games-id" name="id" value="">
+                        @csrf
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Amount <span class="input-mandatory">*</span></label>
+                                <input type="number" name="" class="form-control" placeholder="Enter Amount">
+                                <span class="text-danger error-msg name"></span>
+                            </div>
+                        </div>
+                       </div>
+                   </div>
+                <div class="modal-footer">
+                    <button type="button"   class="btn btn-primary">Save</button>
+                    <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="add-withdraw-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                  <h4 class="modal-title">Withdraw Fund</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="post" id="form-add-games">
+                        <input type="hidden" id="add-games-id" name="id" value="">
+                        @csrf
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Amount <span class="input-mandatory">*</span></label>
+                                <input type="number" name="" class="form-control" placeholder="Enter Amount">
+                                <span class="text-danger error-msg name"></span>
+                            </div>
+                        </div>
+                       </div>
+                   </div>
+                <div class="modal-footer">
+                    <button type="button"  onclick="addgame()" class="btn btn-primary">Save</button>
+                    <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+      </div>
+      {{-- model close --}}
+
         <div class="container-fluid">
           <div class="row">
             <div class="col-8">
@@ -36,7 +109,7 @@
                 <!-- /.card-header -->
                 {{-- <div class="card-body"> --}}
                   <table class="table table-bordered table-striped" id="customer-details-list">
-                   
+
 
                     <thead>
 
@@ -61,7 +134,15 @@
                             <td>Mobile</td>
                             <td>{{$item->phone}}</td>
                             <td>Password</td>
-                            <td>{{$item->password}}</td>
+                            <td>
+                                @if(isset($item->password))
+                                    Password is Hidden
+                                @else
+                                    {{ $item->password }}
+                                    No any password create
+                                @endif
+                            </td>
+
                         </tr>
                         <tr>
                             <td>Security Pin</td>
@@ -216,4 +297,36 @@
       });
     });
 </script> --}}
+
+<script>
+    function editgame(){
+    var fdata = $('#add-fund-modal').serialize();
+    $.ajax({
+        method : "post",
+        url :'{{route("games.edit")}}',
+        data :fdata,
+        headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   },
+        success: function(data){
+            if(data.error == 1){
+                if (data.vderror == 1) {
+                    printErrorMsg(data.errors,"#edit-games-modal");
+                }else{
+                      $("#edit-games-modal").modal('hide');
+                      toastr.error(data.msg,'danger');
+                      $('#form-edit-games')[0].reset();
+                   }
+            }else{
+                    $("#edit-games-modal").modal('hide');
+                    toastr.success(data.msg,'success');
+
+                   $('#form-edit-games')[0].reset();
+                   $('#games-details-list').DataTable().draw();
+            }
+        }
+    })
+}
+</script>
+
 @endsection

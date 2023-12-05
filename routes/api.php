@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlphaApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
@@ -78,7 +79,9 @@ Route::get('/listcust', [CustomerApiController::class, 'index']);
 
 
 
+//alpha api
 
-
+//ragister
+Route::post('alpharegister',[AlphaApiController::class,'alpharegister']);
 
 

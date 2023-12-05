@@ -75,4 +75,7 @@ Route::post('/customer/update', [CustomerController::class, 'update'])->name('cu
 Route::post('/customer/status', [CustomerController::class, 'status'])->name('customer.status');
 Route::post('/customer/delete', [CustomerController::class, 'delete'])->name('customer.delete');
 
+Route::post('/customer/point', [CustomerController::class, 'addpoint'])->name('customer.addpoint');
+
+
 });
