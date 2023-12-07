@@ -348,16 +348,64 @@ public function pointwithdraw(Request $request, $user_id){
 
 //withdraw point history
 
-public function withdrawPointsForhistory($userId){
-    $points = DB::table('history')
-    ->select('debit', 'type', 'time')
-    ->where('user_id', $userId)
-    ->where('type', 1)
-    ->whereNotNull('debit')  // Exclude rows with null 'point' values
-    ->get();
-    return response()->json(['points' => $points], 200);
+// public function withdrawPointsForhistory($userId){
+//     $points = DB::table('history')
+//     ->select('debit', 'type', 'time')
+//     ->where('user_id', $userId)
+//     ->where('type', 1)
+//     ->whereNotNull('debit')  // Exclude rows with null 'point' values
+//     ->get();
+//     return response()->json(['points' => $points], 200);
+// }
+
+public function history(Request $request, $id)
+{
+    try {
+        // Find the user by their id in the users table
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Retrieve history records for the specified user
+        $history = History::where('user_id', $user->id)->get();
+
+        return response()->json(['data' => $history, 'status' => true], 200);
+    } catch (\Exception $e) {
+        // Handle exceptions if any
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 }
 
+public function bidHistory(Request $request, $id)
+    {
+        try {
+            // Validate the user ID
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'exists:users,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()->first()], 404);
+            }
+
+            // Find the user by their id in the users table
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            // Retrieve bid history records for the specified user
+            $bidHistory = Typegames::where('user_id', $user->id)->get();
+
+            return response()->json(['data' => $bidHistory, 'status' => true], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions if any
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 public function gamestore(Request $request)
 {

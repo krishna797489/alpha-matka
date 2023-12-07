@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\history;
+use App\typegames;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -30,56 +32,81 @@ class CustomerController extends Controller
 
       public function viewdetail(Request $request ,$id){
 //echo"<pre>";print_r($id);exit;
-$item =Customer::where('id',$request->id)->first();
+        $item =Customer::where('id',$request->id)->first();
 //echo"<pre>";print_r($employee);exit;
 
     //    / $employee = Customer::where('usertype', 1)->find($id )->first();
        return view('customer.customer_view',compact('item'));
 
       }
+      public function History(Request $request,$id){
+        // $user_id=User::Find($id);
+        $item = History::where('user_id', $id)->get();
 
-     public function list(Request $request)
-    {
-     if (!$request->ajax()) {
-         return response()->json([
-           "status" => "fail",
-           "message" => "Bad Request."
-         ], 401);
-       }
+        // echo"<pre>";print_r($item);exit;
+        return view('customer.history',compact('item'));
+      }
+      public function bidhistory(Request $request,$id){
+        $item = typegames::where('user_id', $id)->get();
+        //  echo"<pre>";print_r($item);exit;
+        return view('customer.bid_history',compact('item'));
 
-       $list = Customer::where('usertype', 1)->get();
+      }
 
-       return datatables($list)
-         ->addIndexColumn()
-         ->addColumn('status', function ($row) {
-
-          if ($row->status) {
-
-            return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus('.($row->id).')">Disable</button>';
-          } else {
-            return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus('.($row->id).')">Enable</button>';
+      public function list(Request $request)
+      {
+          if (!$request->ajax()) {
+              return response()->json([
+                  "status" => "fail",
+                  "message" => "Bad Request."
+              ], 401);
           }
-        })
-        ->addColumn('action', function ($row) {
-            return '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm mr-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
-        })
 
-         ->addColumn('email', function ($row) {
-            return $row->email ? $row->email : 'No Email';
-        })
-        ->addColumn('phone', function ($row) {
-            return $row->phone ? $row->phone : 'No Phone no';
-        })
-        ->addColumn('mpin', function ($row) {
-            return $row->mpin ? $row->mpin : 'No Mpin';
-        })
-        ->rawColumns(['status','action'])
-         ->make(true);
- }
+          $list = Customer::where('usertype', 1)->get();
+
+          return datatables($list)
+              ->addIndexColumn()
+              ->addColumn('status', function ($row) {
+                  if ($row->status) {
+                      return '<button type="button" class="btn btn-block btn-danger btn-sm" onclick="changestatus(' . $row->id . ')">Disable</button>';
+                  } else {
+                      return '<button type="button" class="btn btn-block btn-success btn-sm" onclick="changestatus(' . $row->id . ')">Enable</button>';
+                  }
+              })
+              ->addColumn('action', function ($row) {
+                  // Add "History" button to view customer history
+                  $historyButton = '<a href="History/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm mr-2" onclick="viewHistory(' . $row->id . ')">History</a>';
+                  $BIDhistory = '<a href="bidhistory/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm mr-2" onclick="viewHistory(' . $row->id . ')">BID</a>';
+
+                  // View button for customer details
+                  $viewButton = '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm mr-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
+
+                  return $historyButton . $viewButton.$BIDhistory;
+              })
+              ->addColumn('email', function ($row) {
+                  return $row->email ? $row->email : 'No Email';
+              })
+              ->addColumn('phone', function ($row) {
+                  return $row->phone ? $row->phone : 'No Phone no';
+              })
+              ->addColumn('mpin', function ($row) {
+                  return $row->mpin ? $row->mpin : 'No Mpin';
+              })
+              ->rawColumns(['status', 'action'])
+              ->make(true);
+      }
+
     public function customerDetail(){
         return view('customer.customer_view');
 
     }
+
+
+
+// Route definition
+
+
+
 
  public  function status(Request $request)
  {

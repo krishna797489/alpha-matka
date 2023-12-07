@@ -270,12 +270,16 @@
 
 
 
-	</div>
-</div>
+
+
 
       </section>
     <!-- /.content -->
+
   </div>
+
+
+
   {{-- <script>
     $(document).ready(function () {
       var table = $('#customer-details-list').DataTable({
@@ -328,5 +332,6 @@
     })
 }
 </script>
+
 
 @endsection

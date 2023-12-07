@@ -43,7 +43,7 @@
                       <th>Mpin</th>
                       <th>created_at</th>
                       <th>Action</th>
-                      <th>View</th>
+                      <th>Detail</th>
 
                     </tr>
                   </thead>
@@ -60,6 +60,7 @@
 
       </div><!-- /.container-fluid -->
     </section>
+
     <!-- /.content -->
   </div>
 

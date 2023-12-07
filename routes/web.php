@@ -65,7 +65,11 @@ Route::post('/games/status', [GamesController::class, 'status'])->name('games.st
 //customer route
 Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
 
+//view detail
 Route::get('employees/{id}', [CustomerController::class, 'viewdetail'])->name('viewdetail');
+Route::get('History/{id}', [CustomerController::class, 'History'])->name('History');
+Route::get('bidhistory/{id}', [CustomerController::class, 'bidhistory'])->name('bidhistory');
+
 
 Route::get('/customer/add', [CustomerController::class, 'add'])->name('customer.add');
 Route::post('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
@@ -77,5 +81,6 @@ Route::post('/customer/delete', [CustomerController::class, 'delete'])->name('cu
 
 Route::post('/customer/point', [CustomerController::class, 'addpoint'])->name('customer.addpoint');
 
+Route::get('/withdraw/list', [CustomerController::class, 'withdraw'])->name('withdraw.list');
 
 });

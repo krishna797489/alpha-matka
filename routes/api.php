@@ -51,7 +51,7 @@ Route::post('/participate/{id}', [ApiController::class,'participate']);
 Route::post('/addpoint/{id}', [ApiController::class,'addpoint']);
 Route::get('getPointSum/{user_id}', [ApiController::class, 'getPointSum']);
 Route::get('addPointshistory/{user_id}', [ApiController::class, 'addPointsForhistory']);
-Route::get('withdrawPointsForhistory/{user_id}', [ApiController::class, 'withdrawPointsForhistory']);
+//Route::get('withdrawPointsForhistory/{user_id}', [ApiController::class, 'withdrawPointsForhistory']);
 Route::get('pointwithdraw/{user_id}', [ApiController::class, 'pointwithdraw']);
 
 //games Api
@@ -78,10 +78,10 @@ Route::get('/showcust/{id}', 'CustomerApiController@showcust');
 Route::get('/listcust', [CustomerApiController::class, 'index']);
 
 
-
+Route::get('/history/{id}', [ApiController::class, 'history']);
+Route::get('/bidhistory/{id}', [ApiController::class, 'bidHistory']);
 //alpha api
 
 //ragister
-Route::post('alpharegister',[AlphaApiController::class,'alpharegister']);
 
 
