@@ -94,6 +94,9 @@
             </div>
         </div>
       </div>
+
+
+
       {{-- model close --}}
 
         <div class="container-fluid">
@@ -132,7 +135,8 @@
                         </tr>
                         <tr>
                             <td>Mobile</td>
-                            <td>{{$item->phone}}</td>
+                          <td><?php echo ($item->mpin !== null) ? $item->mpin : 'Mobile Not Created'; ?></td>
+
                             <td>Password</td>
                             <td>
                                 @if(isset($item->password))
@@ -146,7 +150,9 @@
                         </tr>
                         <tr>
                             <td>Security Pin</td>
-                            <td><span id="security_pin_text">{{$item->mpin}}</span> <button class="btn btn-primary btn-sm" id="changePin">Change</button></td>
+                            <td><?php echo ($item->mpin !== null) ? $item->mpin : 'No MPIN created'; ?></td>
+
+
                             <td>User Status</td>
                             <td>
                                 @if($item->status == 1)
@@ -159,47 +165,20 @@
                                 @endif
                             </td>
                          </tr>
+
                         <tr>
-                            <td>Flat/Plot No.</td>
-                            <td>N/A</td>
-                            <td>Address Lane 1</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>Address Lane 2</td>
-                            <td>N/A</td>
-                            <td>Area</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>Pin Code</td>
-                            <td>N/A</td>
-                            <td>State Name</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>District Name</td>
-                            <td>N/A</td>
+
                             <td>Creation Date</td>
                             <td>{{$item->created_at}}</td>
                         </tr>
                         <tr>
                             <td>Last Seen</td>
                             <td>{{$item->updated_at}}</td>
-                                                                    <td>Betting Status</td>
-                                <td><badge class="badge badge-primary">Allowed For Betting</badge></td>
+
                                                             </tr>
 
 
-                        <tr>
-                            <td>Transfer Point Permission</td>
-                            <td>
-                                <span id="tp_stats"><badge class="badge badge-danger">Deactivated</badge></span>
-                                &nbsp;&nbsp;&nbsp;
 
-                                <a class="danger transferPointStatus" href="" id="1-96-tb_user-user_id-transfer_point_status"><button class="btn btn-outline-success btn-xs m-l-5" type="button">Change</button></a>
-                                 </td>
-                        </tr>
 
 
 
@@ -212,58 +191,7 @@
               <!-- /.card -->
             </div>
             <!-- /.col -->
-            <div class="col-12 col-md-4 col-lg-4">
-                <div class="card">
-                    <div class="">
-                        <h4 class="card-title">Payment Detail</h4>
-                        <div class="table-responsive m-t-20">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="w-45">Name</th>
-                                        <th>Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table_font">
-                                    <tr>
-                                        <td>Bank Name</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Branch Address</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>A/c Holder Name</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>A/c Number</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>IFSC Code</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Paytm No.</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Google Pay No.</td>
-                                        <td>7738912081</td>
-                                    </tr>
-                                    <tr>
-                                        <td>PhonePe No.</td>
-                                        <td></td>
-                                    </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
           </div>
 
         </div><!-- /.container-fluid -->
@@ -279,59 +207,6 @@
   </div>
 
 
-
-  {{-- <script>
-    $(document).ready(function () {
-      var table = $('#customer-details-list').DataTable({
-      processing: true,
-      serverSide: true,
-      responsive: false,
-
-      ajax: "{{ route('customer.list') }}",
-      columns: [
-      { data: 'name', name: 'name'},
-      { data: 'email', name: 'email'},
-      { data: 'phone', name: 'phone'},
-      { data: 'mpin', name: 'mpin'},
-      { data: 'created_at', name: 'created_at'},
-      { data: 'status', name: 'status'},
-      {data: 'action', name: 'action', orderable: false},
-      ],
-    //   order: [[1, 'desc']]
-      });
-    });
-</script> --}}
-
-<script>
-    function editgame(){
-    var fdata = $('#add-fund-modal').serialize();
-    $.ajax({
-        method : "post",
-        url :'{{route("games.edit")}}',
-        data :fdata,
-        headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-   },
-        success: function(data){
-            if(data.error == 1){
-                if (data.vderror == 1) {
-                    printErrorMsg(data.errors,"#edit-games-modal");
-                }else{
-                      $("#edit-games-modal").modal('hide');
-                      toastr.error(data.msg,'danger');
-                      $('#form-edit-games')[0].reset();
-                   }
-            }else{
-                    $("#edit-games-modal").modal('hide');
-                    toastr.success(data.msg,'success');
-
-                   $('#form-edit-games')[0].reset();
-                   $('#games-details-list').DataTable().draw();
-            }
-        }
-    })
-}
-</script>
 
 
 @endsection

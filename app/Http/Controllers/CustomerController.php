@@ -53,6 +53,34 @@ class CustomerController extends Controller
 
       }
 
+
+      public function showUserInfo()
+    {
+        $users = User::all();
+
+    // Pass the user data to the view
+    return view('customer.add_fund_user', ['users' => $users]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'user' => 'required|exists:users,id',
+            'point' => 'required|numeric|min:0',
+        ]);
+
+        $user = User::find($request->input('user'));
+
+        $transaction = history::create([
+            'user_id' => $user->id,
+            'point' => $request->input('point'),
+            'status' => 1,
+            'time' => Carbon::now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Transaction added successfully.');
+    }
+
       public function list(Request $request)
       {
           if (!$request->ajax()) {

@@ -59,11 +59,11 @@
                                                     @elseif ($historyRecord->payment_type == 3)
                                                     PhonePe
                                                 @else
-                                                    No Method
+                                                    Admin
                                                 @endif
                                             </td>
                                              <td>
-                                                @if($historyRecord->type==0)
+                                                @if($historyRecord->status==1)
                                                 Credit
                                                 @else
                                                 Debit
@@ -92,5 +92,5 @@
 
     <!-- /.content -->
   </div>
- 
+
   @endsection

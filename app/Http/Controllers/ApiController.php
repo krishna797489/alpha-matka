@@ -280,26 +280,32 @@ public function participate(Request $request ,$id)
 //wallet se related
 
 public function addpoint(Request $request,$id){
-    $user = User::find($id);
+    $validator = Validator::make($request->all(), [
+        'payment_type' => 'required',
+        'point' => 'required|numeric|min:0', // Adjust the validation rules as needed
+    ]);
 
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
+    }
+
+    $user = User::find($id);
 
     if (!$user) {
         return response()->json(['message' => 'User not found', 'status' => false], 404);
     }
-    $time =Carbon::now();
-    if ($user) {
-        // Agar user_id ke sath ek record mil gaya, to use update karein
-        history::create([
-            'user_id' => $user->id,
-            'payment_type' => $request->input('payment_type'),
-            'point' => $request->input('point'),
-            'time' =>Carbon::now(),
-            'type' => $request->input('type','0'),
-            // 'amount' => $request->input('amount'),
-        ]);
-        return response()->json(['message' => 'new point successfully added', 'status' => true], 201);
-    }
 
+    // If user is found and validation passes, proceed with creating the history record
+    $transaction = history::create([
+        'user_id' => $user->id,
+        'payment_type' => $request->input('payment_type'),
+        'point' => $request->input('point'),
+        'time' => Carbon::now(),
+        'status' => 1,
+    ]);
+
+    return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
     }
 
     public function getPointSum($user_id) {
@@ -326,25 +332,50 @@ public function addPointsForhistory($userId) {
 }
 
 //withdraw point
-public function pointwithdraw(Request $request, $user_id){
+public function pointWithdraw(Request $request, $user_id)
+{
+    // Validation rules
+    $rules = [
+        'point' => 'required|numeric|min:20', // Assuming 'debit' should be a non-negative numeric value
+        'payment_type' => 'required', // Assuming 'withdraw_methord' should be a non-empty string
+
+    ];
+
+    // Custom error messages
+    $messages = [
+        'point.required' => 'The point field is required.',
+
+        'point.min' => 'The debit must be at least :min.',
+        'payment_type.required' => 'The withdraw method field is required.',
+    ];
+
+    // Validate the request data
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    // Check for validation errors
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()->first(), 'status' => false], 400);
+    }
+
     // Check if the user exists
-    $user = history::find($user_id);
+    $user = History::find($user_id);
 
     if (!$user) {
         return response()->json(['message' => 'User not found', 'status' => false], 404);
     }
 
     // If the user exists, insert the data
-    history::create([
-        'user_id' => $user_id, // Assuming there's a 'user_id' field in the 'history' table
-        'debit' => $request->input('debit'),
-        'withdraw_methord' => $request->input('withdraw_methord'),
-        'type' => $request->input('type', '1'),
-        'time' => Carbon::now(),
+    History::create([
+        'user_id' => $user_id,
+        'point' => $request->input('point'),
+        'payment_type' => $request->input('payment_type'),
+        'status' => 0,
+        'time' => Carbon::now(), // Use the now() helper function instead of Carbon::now()
     ]);
 
-    return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
+    return response()->json(['message' => 'point withdraw successfully ', 'status' => true], 201);
 }
+
 
 //withdraw point history
 

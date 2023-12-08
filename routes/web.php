@@ -83,4 +83,7 @@ Route::post('/customer/point', [CustomerController::class, 'addpoint'])->name('c
 
 Route::get('/withdraw/list', [CustomerController::class, 'withdraw'])->name('withdraw.list');
 
+Route::get('/Addfund', [CustomerController::class, 'showUserInfo'])->name('addfunduser');
+
+Route::post('/balance/store', [CustomerController::class, 'store'])->name('balance.store');
 });
