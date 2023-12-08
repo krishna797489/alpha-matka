@@ -303,6 +303,7 @@
             </a>
             <div class="collapse" id="gamesCo">
                 <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="#">Withdraw fund Request</a></li>
                     <li><a href="{{route('withdrawadmin')}}">Withdraw fund(User Wallet)</a></li>
                     <li><a href="{{route('addfunduser')}}">Add Fund(User Wallet)</a></li>
 

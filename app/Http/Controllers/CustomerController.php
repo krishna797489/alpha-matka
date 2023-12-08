@@ -122,7 +122,7 @@ class CustomerController extends Controller
             'time' => Carbon::now(),
         ]);
 
-        return response()->json(['success' => 'Points withdrawn successfully.'], 200);
+        return redirect()->back()->with('success' ,'Points withdrawn successfully.');
     }
 
 

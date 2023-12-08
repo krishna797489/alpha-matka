@@ -36,9 +36,9 @@
 
                                 @endif
                                 @if(session('success'))
-                                <div id="success" class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
+                                    <div id="success" class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
 
                                 @endif
                                 <form class="theme-form mega-form" id="balanceAddFrm" name="balanceAddFrm" method="post" action="{{ route('withdrabyadmin') }}" >
@@ -71,11 +71,6 @@
         setTimeout(function() {
             document.getElementById('error').style.display = 'none';
         }, 4000); // 5000 milliseconds = 5 seconds
-    </script>
-      <script>
-        setTimeout(function() {
-            document.getElementById('success').style.display = 'none';
-        }, 5000); // 5000 milliseconds = 5 seconds
     </script>
 
     @endsection
