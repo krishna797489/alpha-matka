@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\history;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -14,6 +15,10 @@ class User extends Authenticatable
     public function profile()
 {
     return $this->hasOne(User::class);
+}
+public function histories()
+{
+    return $this->hasMany(History::class, 'user_id');
 }
 
     /**

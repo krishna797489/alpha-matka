@@ -7,19 +7,17 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Balance</h1>
+            <h1>Withdraw balance</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-              <li class="breadcrumb-item active">Add Balance</li>
+              <li class="breadcrumb-item active">Withdraw balance</li>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
-
 
     <div class="page-body"><br />	<div class="container-fluid">
         <div class="row">
@@ -28,10 +26,22 @@
                     <div class="col-sm-12">
                         <div class="card">
                           <div class="card-header">
-                            <h5>Add Balance In User Wallet</h5>
+                            <h5>Withdraw balance In User Wallet</h5>
                           </div>
                             <div class="card-body" >
-                                <form class="theme-form mega-form" id="balanceAddFrm" name="balanceAddFrm" method="post" action="{{ route('balance.store') }}" >
+                                @if(session('error'))
+                                    <div id="error" class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+
+                                @endif
+                                @if(session('success'))
+                                <div id="success" class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+
+                                @endif
+                                <form class="theme-form mega-form" id="balanceAddFrm" name="balanceAddFrm" method="post" action="{{ route('withdrabyadmin') }}" >
                                     @csrf
                                     <div class="form-group" >
                                         <label class="col-form-label">User List</label>
@@ -49,9 +59,6 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn">Submit</button>
                                     </div>
-                                    <div class="form-group">
-                                        <div id="error"></div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -60,5 +67,15 @@
             </div>
         </div>
     </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('error').style.display = 'none';
+        }, 4000); // 5000 milliseconds = 5 seconds
+    </script>
+      <script>
+        setTimeout(function() {
+            document.getElementById('success').style.display = 'none';
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
 
     @endsection

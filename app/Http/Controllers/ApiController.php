@@ -332,48 +332,47 @@ public function addPointsForhistory($userId) {
 }
 
 //withdraw point
-public function pointWithdraw(Request $request, $user_id)
+public function pointWithdraw(Request $request)
 {
-    // Validation rules
-    $rules = [
-        'point' => 'required|numeric|min:20', // Assuming 'debit' should be a non-negative numeric value
-        'payment_type' => 'required', // Assuming 'withdraw_methord' should be a non-empty string
-
-    ];
-
-    // Custom error messages
-    $messages = [
-        'point.required' => 'The point field is required.',
-
-        'point.min' => 'The debit must be at least :min.',
-        'payment_type.required' => 'The withdraw method field is required.',
-    ];
-
-    // Validate the request data
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    // Check for validation errors
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors()->first(), 'status' => false], 400);
-    }
-
-    // Check if the user exists
-    $user = History::find($user_id);
-
-    if (!$user) {
-        return response()->json(['message' => 'User not found', 'status' => false], 404);
-    }
-
-    // If the user exists, insert the data
-    History::create([
-        'user_id' => $user_id,
-        'point' => $request->input('point'),
-        'payment_type' => $request->input('payment_type'),
-        'status' => 0,
-        'time' => Carbon::now(), // Use the now() helper function instead of Carbon::now()
+    $validator = Validator::make($request->all(), [
+        'user' => 'required|exists:users,id',
+        'point' => 'required|numeric|min:0',
     ]);
 
-    return response()->json(['message' => 'point withdraw successfully ', 'status' => true], 201);
+      echo"<pre>";print_r($validator);exit;
+    $user = User::find($request->input('user'));
+    // Check validation results
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()->first()], 400);
+    }
+
+    $user = User::find($request->input('user'));
+
+    // Check if the user exists
+    if (!$user) {
+        return response()->json(['error' => 'User not found.'], 404);
+    }
+
+    // Calculate available balance
+    $availableBalance = $user->histories()
+        ->where('status', 1) // Only consider added points
+        ->sum('point');
+
+    // Check if the user has enough points
+    if ($request->input('point') > $availableBalance) {
+        return response()->json(['error' => 'Insufficient points available for withdrawal.'], 400);
+    }
+
+    // Create withdrawal transaction
+    $transaction = History::create([
+        'user_id' => $user->id,
+        'point' => $request->input('point'),
+        'status' => 0,
+        'time' => now(),
+    ]);
+
+    return response()->json(['success' => 'Points withdrawn successfully.'], 200);
+
 }
 
 

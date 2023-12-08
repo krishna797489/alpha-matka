@@ -27,11 +27,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Wallet Transaction History</h3>
+                            <h3 class="card-title">Wallet Transaction History</h3><br>
+                                <h4 colspan="3">Total Balance {{ $availableBalance }}</h4>
+
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
+
                                 <thead>
                                     <tr>
 
@@ -44,7 +47,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($item as $historyRecord)
+                                    @forelse ($userHistory as $historyRecord)
+
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
@@ -75,7 +79,9 @@
                                         <tr>
                                             <td colspan="4">No history records found for this user.</td>
                                         </tr>
+
                                     @endforelse
+
                                 </tbody>
                             </table>
                         </div>

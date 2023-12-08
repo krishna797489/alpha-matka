@@ -82,8 +82,10 @@ Route::post('/customer/delete', [CustomerController::class, 'delete'])->name('cu
 Route::post('/customer/point', [CustomerController::class, 'addpoint'])->name('customer.addpoint');
 
 Route::get('/withdraw/list', [CustomerController::class, 'withdraw'])->name('withdraw.list');
-
+//credit admin
 Route::get('/Addfund', [CustomerController::class, 'showUserInfo'])->name('addfunduser');
-
 Route::post('/balance/store', [CustomerController::class, 'store'])->name('balance.store');
+//withdraw admin
+Route::get('/balance/withdrawpage', [CustomerController::class, 'withdrawadmin'])->name('withdrawadmin');
+Route::post('/balance/withdrawadmin', [CustomerController::class, 'withdrabyadmin'])->name('withdrabyadmin');
 });

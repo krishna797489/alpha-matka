@@ -298,12 +298,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#gamesCo" role="button">
-                <i class="fa-google-wallet"></i>User Wallet Management
+                <i class="fa fa-university"></i> Wallet Management
                 <span class="fa fa-chevron-down"></span>
             </a>
             <div class="collapse" id="gamesCo">
                 <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="#">Withdraw Request</a></li>
+                    <li><a href="{{route('withdrawadmin')}}">Withdraw fund(User Wallet)</a></li>
                     <li><a href="{{route('addfunduser')}}">Add Fund(User Wallet)</a></li>
 
                 </ul>

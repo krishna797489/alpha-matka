@@ -41,10 +41,18 @@ class CustomerController extends Controller
       }
       public function History(Request $request,$id){
         // $user_id=User::Find($id);
-        $item = History::where('user_id', $id)->get();
+        $userHistory = History::where('user_id', $id)->get();
 
-        // echo"<pre>";print_r($item);exit;
-        return view('customer.history',compact('item'));
+        // Calculate total points withdrawn
+        $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+        // Calculate total points added
+        $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+
+        // Calculate available balance
+        $availableBalance = $totalPointsWithdrawn-$totalPointsAdded;
+
+        return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
       }
       public function bidhistory(Request $request,$id){
         $item = typegames::where('user_id', $id)->get();
@@ -80,6 +88,43 @@ class CustomerController extends Controller
 
         return redirect()->back()->with('success', 'Transaction added successfully.');
     }
+
+    public function withdrawadmin(){
+        $users = User::all();
+    // Pass the user data to the view
+    return view('customer.debit_fund_user', ['users' => $users]);
+    }
+    public function withdrabyadmin(Request $request)
+    {
+        $request->validate([
+            'user' => 'required|exists:users,id',
+            'point' => 'required|numeric|min:0',
+        ]);
+
+        $user = User::find($request->input('user'));
+
+        // Calculate available balance
+        $availableBalance = $user->histories()
+            ->where('status', 1) // Only consider added points
+            ->sum('point');
+
+        // Check if the user has enough points
+        if ($request->input('point') > $availableBalance) {
+            return redirect()->back()->with('error', 'Insufficient points available for withdrawal.');
+
+        }
+
+        // Create withdrawal transaction
+        $transaction = history::create([
+            'user_id' => $user->id,
+            'point' => $request->input('point'),
+            'status' => 0,
+            'time' => Carbon::now(),
+        ]);
+
+        return response()->json(['success' => 'Points withdrawn successfully.'], 200);
+    }
+
 
       public function list(Request $request)
       {
