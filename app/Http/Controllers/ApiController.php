@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Contact;
 use Illuminate\Support\Facades\Hash;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Validator;
@@ -471,6 +473,16 @@ public function getAllGames()
 
         if ($games->isEmpty()) {
             return response()->json(['message' => 'No games found']);
+        }
+
+        return response()->json($games);
+    }
+public function getContact()
+    {
+        $games = Contact::get();
+
+        if ($games->isEmpty()) {
+            return response()->json(['message' => 'Contact detail Not found']);
         }
 
         return response()->json($games);

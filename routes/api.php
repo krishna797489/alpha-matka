@@ -80,8 +80,8 @@ Route::get('/listcust', [CustomerApiController::class, 'index']);
 
 Route::get('/history/{id}', [ApiController::class, 'history']);
 Route::get('/bidhistory/{id}', [ApiController::class, 'bidHistory']);
-//alpha api
+//contact get api
+Route::get('/getContact', [ApiController::class, 'getContact']);
 
-//ragister
 
 

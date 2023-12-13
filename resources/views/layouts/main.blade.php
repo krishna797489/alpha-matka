@@ -310,11 +310,18 @@
                 </ul>
             </div>
         </li>
-
-
-
-
-
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesCotf" role="button">
+                <i class="fa fa-cog"></i> Settings Management
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesCotf">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="#">Admin Settings Managment</a></li>
+                    <li><a href="{{route('contactmanagemnt')}}">Contact Settings Management</a></li>
+                </ul>
+            </div>
+        </li>
 
 
           <li class="nav-item">

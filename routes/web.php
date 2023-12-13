@@ -88,4 +88,18 @@ Route::post('/balance/store', [CustomerController::class, 'store'])->name('balan
 //withdraw admin
 Route::get('/balance/withdrawpage', [CustomerController::class, 'withdrawadmin'])->name('withdrawadmin');
 Route::post('/balance/withdrawadmin', [CustomerController::class, 'withdrabyadmin'])->name('withdrabyadmin');
+
+
+
+
+//contact management
+Route::get('/contact/management', [CustomerController::class, 'contactmanagemnt'])->name('contactmanagemnt');
+Route::get('/contact/list', [CustomerController::class, 'contact'])->name('contact.list');
+Route::get('/contact/list', [CustomerController::class, 'contact'])->name('contact.list');
+Route::get('/contact/edit', [CustomerController::class, 'contactget'])->name('contact.edit');
+
+
+
+
+
 });

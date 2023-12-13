@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\history;
@@ -125,7 +126,76 @@ class CustomerController extends Controller
         return redirect()->back()->with('success' ,'Points withdrawn successfully.');
     }
 
+    public function contactmanagemnt(){
+        return view('customer.contact_man');
+    }
 
+    public function contact(Request $request)
+{
+    if (!$request->ajax()) {
+        return response()->json([
+            "status" => "fail",
+            "message" => "Bad Request."
+        ], 401);
+    }
+
+    $list = Contact::select(['id', 'mobile', 'whatsApp', 'email'])->get();
+
+    return datatables($list)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+            return '<button type="button" onclick="edit(' . $row->id . ')" class="btn btn-outline-info btn-sm mr-p5"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
+
+    public function contactedit(Request $request) {
+    $validator = Validator::make($request->all(), [
+        'mobile' => 'required|max:12',
+        'whatsApp' => 'required|max:12',
+        'email' => 'required|email',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'error' => 1,
+            'vderror' => 1,
+            'errors' => $validator->getMessageBag()->toArray(),
+        ], 200);
+    }
+
+    $contact = Contact::find($request->id);
+
+    if (!$contact) {
+        return response()->json([
+            'error' => 1,
+            'msg' => 'Contact not found.',
+        ], 200);
+    }
+
+    $contact->mobile = $request->mobile;
+    $contact->whatsApp = $request->whatsApp;
+    $contact->email = $request->email;
+
+    if ($contact->save()) {
+        return response()->json([
+            'error' => 0,
+            'msg' => 'Contact has been updated successfully.',
+        ], 200);
+    } else {
+        return response()->json([
+            'error' => 1,
+            'msg' => 'Contact failed to update.',
+        ], 200);
+    }
+}
+
+ public function contactget(Request $request)
+ {
+  //echo"<pre>";print_r($request->All());exit;
+     return Contact::where('id',$request->id)->first();
+ }
       public function list(Request $request)
       {
           if (!$request->ajax()) {
