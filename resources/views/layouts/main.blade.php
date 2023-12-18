@@ -290,8 +290,11 @@
             </a>
             <div class="collapse" id="gamesCol">
                 <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="#">Game name</a></li>
-                    <li><a href="#">Starline Rates</a></li>
+                    <li><a href="{{route('starline')}}">Game name</a></li>
+                    <li><a href="{{route('starlinetypes.Gamesrated')}}">Starline Rates</a></li>
+                    <li><a href="#">Bid History</a></li>
+                    <li><a href="#">Declare Result</a></li>
+                    <li><a href="#">Starline Result History</a></li>
 
                 </ul>
             </div>
@@ -303,9 +306,21 @@
             </a>
             <div class="collapse" id="gamesCo">
                 <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="#">Withdraw fund Request</a></li>
                     <li><a href="{{route('withdrawadmin')}}">Withdraw fund(User Wallet)</a></li>
                     <li><a href="{{route('addfunduser')}}">Add Fund(User Wallet)</a></li>
+
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gamesCoo" role="button">
+                <i class="fa fa-university"></i> Result Management
+                <span class="fa fa-chevron-down"></span>
+            </a>
+            <div class="collapse" id="gamesCoo">
+                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
+                    <li><a href="{{route('games.result')}}">Declare Result</a></li>
+                    <li><a href="#">Result History</a></li>
 
                 </ul>
             </div>

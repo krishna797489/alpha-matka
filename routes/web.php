@@ -5,7 +5,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\CustomerController;
-
+use App\Http\Controllers\StarlinegameController;
+use App\Starlinegames;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,22 @@ Route::get('/contact/management', [CustomerController::class, 'contactmanagemnt'
 Route::get('/contact/list', [CustomerController::class, 'contact'])->name('contact.list');
 Route::get('/contact/list', [CustomerController::class, 'contact'])->name('contact.list');
 Route::get('/contact/edit', [CustomerController::class, 'contactget'])->name('contact.edit');
+
+//Starline Game related
+Route::get('/starline/view', [StarlinegameController::class, 'starline'])->name('starline');
+Route::get('/starlinegames/list', [StarlinegameController::class, 'list'])->name('starlinegames.list');
+Route::post('/starlinegames/status', [StarlinegameController::class, 'status'])->name('starlinegames.status');
+Route::post('/Starlinegames/add', [StarlinegameController::class, 'store'])->name('starlinegames.store');
+Route::get('/starlinegames/get', [StarlinegameController::class, 'get'])->name('starlinegames.get');
+Route::post('/starlinegames/edit', [StarlinegameController::class, 'edit'])->name('starlinegames.edit');
+Route::post('/starlinegames/delete', [StarlinegameController::class, 'delete'])->name('starlinegames.delete');
+Route::get('/starlinegames/Gamesrated',[StarlinegameController::class, 'Gamesrated'])->name('starlinetypes.Gamesrated');
+Route::post('/starline/Gamesratedupdate',[StarlinegameController::class, 'Gamesratedpost'])->name('types.starlinerate');
+
+
+
+
+Route::get('Games/result',[GamesController::class, 'result'])->name('games.result');
 
 
 

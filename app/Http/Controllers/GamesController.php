@@ -245,7 +245,9 @@ if ($validator->fails()) {
         ->rawColumns(['status', 'action'])
         ->make(true);
 }
-
+    public function result(){
+        return view('customer.result');
+    }
 public  function status(Request $request)
  {
    $user =Games::where('id',$request->id)->first();
@@ -359,22 +361,27 @@ public  function status(Request $request)
             }
     }
 
-
     public function delete(Request $request)
     {
-      if(Games::softDelete(['id'=>$request->id]))
-      {
-        return response()->json(array(
-          'error' => 0,
-          'msg' => "Games has been deleted successfully."
-        ), 200);
-      } else {
-        return response()->json(array(
-          'error' => 1,
-          'msg' => "Games failed to update."
-        ), 200);
-      }
-    }
+        $starlineGame = Games::find($request->id);
+
+        if ($starlineGame) {
+            // Soft delete the record
+            $starlineGame->delete();
+
+            return response()->json([
+                'error' => 0,
+                'msg' => 'Game has been deleted successfully.'
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 1,
+                'msg' => 'Game Delete Failed. Game not found.'
+            ], 200);
+        }
+
+
+}
 }
 
 
