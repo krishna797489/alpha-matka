@@ -40,27 +40,81 @@ class CustomerController extends Controller
        return view('customer.customer_view',compact('item'));
 
       }
-      public function History(Request $request,$id){
-        // $user_id=User::Find($id);
-        $userHistory = History::where('user_id', $id)->get();
+    //   public function History(Request $request,$id){
+    //     // $user_id=User::Find($id);
+    //     $userHistory = History::where('user_id', $id)->get();
 
-        // Calculate total points withdrawn
-        $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+    //     // Calculate total points withdrawn
+    //     $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
 
-        // Calculate total points added
-        $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+    //     // Calculate total points added
+    //     $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
 
-        // Calculate available balance
-        $availableBalance = $totalPointsWithdrawn-$totalPointsAdded;
+    //     // Calculate available balance
+    //     $availableBalance = $totalPointsAdded-$totalPointsWithdrawn;
 
-        return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
-      }
+    //     return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
+    //   }
+//     public function history(Request $request, $id)
+// {
+//     $userHistory = History::where('user_id', $id)->get();
+
+//     // Calculate total points withdrawn
+//     $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+//     // Calculate total points added
+//     $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+
+//     // Calculate available balance
+//     $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
+
+//     return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
+// }
+
+public function history(Request $request, $id)
+{
+    $userHistory = History::where('user_id', $id)->get();
+
+    // Calculate total points withdrawn
+    $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+    // Calculate total points added
+    $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+//echo"<pre>";print_r($totalPointsAdded);exit;
+    // Calculate available balance
+    $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
+
+    // Check if available balance is less than total points withdrawn
+
+
+    return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
+}
+
+
       public function bidhistory(Request $request,$id){
         $item = typegames::where('user_id', $id)->get();
         //  echo"<pre>";print_r($item);exit;
         return view('customer.bid_history',compact('item'));
 
       }
+
+//     public function History(Request $request, $id)
+// {
+//     // $user_id = User::Find($id);
+//     $userHistory = History::where('user_id', $id)->get();
+
+//     // Calculate total points withdrawn
+//     $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+//     // Calculate total points added
+//     $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+
+//     // Calculate available balance
+//     $availableBalance = max(0, $totalPointsAdded - $totalPointsWithdrawn);
+
+//     return view('customer.history', compact('userHistory', 'totalPointsWithdrawn', 'totalPointsAdded', 'availableBalance'));
+// }
+
 
 
       public function showUserInfo()
@@ -95,36 +149,94 @@ class CustomerController extends Controller
     // Pass the user data to the view
     return view('customer.debit_fund_user', ['users' => $users]);
     }
-    public function withdrabyadmin(Request $request)
-    {
-        $request->validate([
-            'user' => 'required|exists:users,id',
-            'point' => 'required|numeric|min:0',
-        ]);
 
-        $user = User::find($request->input('user'));
+//     public function withdrabyadmin(Request $request)
+// {
+//     $request->validate([
+//         'user'  => 'required|exists:users,id',
+//         'point' => 'required|numeric|min:0',
+//     ]);
 
-        // Calculate available balance
+//     $user = User::find($request->input('user'));
+
+//     // Calculate available balance
+//     $availableBalance = $user->histories()
+//         ->where('status', 1) // Only consider added points
+//         ->sum('point');
+
+//     // Check if the user has enough points
+//     $withdrawalAmount = $request->input('point');
+
+//     // Check if withdrawal amount is greater than available balance
+//     if ($withdrawalAmount > $availableBalance) {
+//         return redirect()->back()->with('error', 'Insufficient points available for withdrawal.');
+//     }
+
+//     // Create withdrawal transaction
+//     $transaction = History::create([
+//         'user_id' => $user->id,
+//         'point'   => $withdrawalAmount, // Use the withdrawal amount, not the input
+//         'status'  => 0,
+//         'time'    => Carbon::now(),
+//     ]);
+
+//     // Subtract the withdrawal amount from the available balance
+//     $updatedBalance = $availableBalance - $withdrawalAmount;
+
+//     // Perform any other actions here, if needed
+
+//     // Redirect or return a response with the updated balance
+//     return redirect()->back()->with('success', 'Points withdrawal successful. Updated balance: ' . $updatedBalance);
+// }
+
+ // Assuming History model is in the "App\Models" namespace
+
+ public function withdrabyadmin(Request $request)
+ {
+     $request->validate([
+         'user'  => 'required|exists:users,id',
+         'point' => 'required|numeric|min:0',
+     ]);
+
+     $user = User::find($request->input('user'));
+
+     if (!$user) {
+         return redirect()->back()->with('error', 'User not found.');
+     }
+
+
+     // Calculate available balance
+    // Calculate available balance by subtracting the sum of points with status = 0
         $availableBalance = $user->histories()
-            ->where('status', 1) // Only consider added points
+        ->where('status', 1) // Only consider added points
+        ->sum('point')
+        - $user->histories()
+            ->where('status', 0) // Subtract the sum of points with status = 0
             ->sum('point');
 
-        // Check if the user has enough points
-        if ($request->input('point') > $availableBalance) {
-            return redirect()->back()->with('error', 'Insufficient points available for withdrawal.');
+     $withdrawalAmount = $request->input('point');
+     //echo"<pre>";print_r($withdrawalAmount);exit;
+     // Ensure withdrawal amount does not exceed available balance
+     if ($withdrawalAmount > $availableBalance ) {
+         return redirect()->back()->with('error', 'Insufficient points available for withdrawal.');
+     }
 
-        }
+     // Create withdrawal transaction
+     $transaction = History::create([
+         'user_id' => $user->id,
+         'point'   => $withdrawalAmount, // Use positive value for withdrawal
+         'status'  => 0,
+         'time'    => now(), // Carbon::now() is equivalent to now()
+     ]);
 
-        // Create withdrawal transaction
-        $transaction = history::create([
-            'user_id' => $user->id,
-            'point' => $request->input('point'),
-            'status' => 0,
-            'time' => Carbon::now(),
-        ]);
+     // Perform any other actions here, if needed
 
-        return redirect()->back()->with('success' ,'Points withdrawn successfully.');
-    }
+     // Redirect or return a response with the updated balance
+    //  $updatedBalance = $availableBalance - $withdrawalAmount;
+     return redirect()->back()->with('success', 'Points withdrawal successful. Updated balance: ' );
+ }
+
+
 
     public function contactmanagemnt(){
         return view('customer.contact_man');

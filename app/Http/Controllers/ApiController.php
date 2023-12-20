@@ -253,32 +253,59 @@ public function changePassword(Request $request, $id)
     }
 
 //types games
-public function participate(Request $request ,$id)
+public function participate(Request $request, $id)
 {
-    $data = $request->all();
+    $validator = Validator::make($request->all(), [
+        'g_id' => 'required|exists:games,id',
 
-     {
-        // Find the user by their id in the users table
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+    ]);
 
-
-        $participation = typegames::create([
-
-            'game_id' => $request->input('game_id'),
-             'type' => $request->input('type','Empty'),
-            'date' => $request->input('date'),
-            'digit' =>$request->input('digit'),
-            'close_digit' =>$request->input('close_digit','Empty'),
-            'session_type' => $request->input('session_type','Empty'),
-            'point' => $request->input('point'),
-            'user_id' => $user->id,
-        ]);
-        return response()->json(['message' => 'Registration successful','status'=>true], 201);
+    if ($validator->fails()) {
+        return response()->json(['status' => false, 'message' => 'Validation Error..', "errors" =>  $validator->errors()]);
     }
+    // Find the user by their id in the users table
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    $availableBalance = $user->histories()
+    ->where('status', 1) // Only consider added points
+    ->sum('point')
+    - $user->histories()
+        ->where('status', 0) // Subtract the sum of points with status = 0
+        ->sum('point');
+
+        $withdrawalAmount = $request->input('point');
+// Check if the user has enough points
+if ($withdrawalAmount > $availableBalance ) {
+     return response()->json(['message' => 'Insufficient points available for Games Play', 'status' => false], 400);
+ }
+
+    // If enough points are available, proceed with participation
+    $participation = typegames::create([
+        'game_id' => $request->input('game_id'),
+        'g_id' => $request->input('g_id'),
+        'type' => $request->input('type', 'Empty'),
+        'date' => $request->input('date'),
+        'digit' => $request->input('digit'),
+        'close_digit' => $request->input('close_digit', 'Empty'),
+        'session_type' => $request->input('session_type', 'Empty'),
+        'point' => $request->input('point'),
+        'user_id' => $user->id,
+    ]);
+
+    // Update points in the histories table
+    $user->histories()->create([
+        'point' => $withdrawalAmount, // deducting points
+        'status' => 0, // Assuming status 0 means deducted
+        'payment_type' => 4,
+        'time'=> Carbon::now(),
+    ]);
+
+    return response()->json(['message' => 'Registration successful', 'status' => true], 201);
 }
+
 //wallet se related
 
 public function addpoint(Request $request,$id){
@@ -310,15 +337,34 @@ public function addpoint(Request $request,$id){
     return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
     }
 
-    public function getPointSum($user_id) {
-        $result = DB::select("SELECT (SELECT SUM(point) FROM history WHERE user_id = ?) - (SELECT SUM(debit) FROM history WHERE user_id = ?) AS difference", [$user_id, $user_id]);
+    public function getPointSum($id) {
+        // $result = DB::select("SELECT (SELECT SUM(point) FROM history WHERE user_id = ?) - (SELECT SUM(debit) FROM history WHERE user_id = ?) AS difference", [$user_id, $user_id]);
+        // // echo"<pre>";print_r($result);exit;
+        // if (!empty($result)) {
+        //     $difference = $result[0]->difference;
+        //     echo"<pre>";print_r($difference);exit;
+        //     return response()->json(['difference' => $difference], 200);
+        // } else {
+        //     return response()->json(['message' => 'User not found or no data available', 'status' => false], 404);
+        // }
+         // $user_id=User::Find($id);
+         $userHistory = History::where('user_id', $id)->get();
 
-        if (!empty($result)) {
-            $difference = $result[0]->difference;
-            return response()->json(['difference' => $difference], 200);
-        } else {
-            return response()->json(['message' => 'User not found or no data available', 'status' => false], 404);
-        }
+         // Calculate total points withdrawn
+         $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+         // Calculate total points added
+         $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+
+         // Calculate available balance
+         $availableBalance = $totalPointsAdded- $totalPointsWithdrawn;
+
+         return response()->json([
+             'totalPointsWithdrawn' => $totalPointsWithdrawn,
+             'totalPointsAdded'     => $totalPointsAdded,
+             'availableBalance'     => $availableBalance,
+         ]);
+
     }
 
 //add point history
@@ -334,48 +380,58 @@ public function addPointsForhistory($userId) {
 }
 
 //withdraw point
-public function pointWithdraw(Request $request)
+public function pointWithdraw(Request $request, $id)
 {
     $validator = Validator::make($request->all(), [
-        'user' => 'required|exists:users,id',
-        'point' => 'required|numeric|min:0',
+        'payment_type' => 'required',
+        'point'=> 'required|numeric|min:0', // Adjust the validation rules as needed
     ]);
 
-      echo"<pre>";print_r($validator);exit;
-    $user = User::find($request->input('user'));
-    // Check validation results
+    // Check if validation fails
     if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors()->first()], 400);
+        return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
     }
 
-    $user = User::find($request->input('user'));
+    $user = User::find($id);
 
-    // Check if the user exists
     if (!$user) {
-        return response()->json(['error' => 'User not found.'], 404);
+        return response()->json(['message' => 'User not found', 'status' => false], 404);
     }
 
     // Calculate available balance
     $availableBalance = $user->histories()
         ->where('status', 1) // Only consider added points
-        ->sum('point');
+        ->sum('point')
+        - $user->histories()
+            ->where('status', 0) // Subtract the sum of points with status = 0
+            ->sum('point');
 
-    // Check if the user has enough points
-    if ($request->input('point') > $availableBalance) {
-        return response()->json(['error' => 'Insufficient points available for withdrawal.'], 400);
-    }
+            $withdrawalAmount = $request->input('point');
+// Check if the user has enough points
+if ($withdrawalAmount > $availableBalance ) {
+         return response()->json(['message' => 'Insufficient points available for withdrawal', 'status' => false], 400);
+     }
 
-    // Create withdrawal transaction
-    $transaction = History::create([
-        'user_id' => $user->id,
-        'point' => $request->input('point'),
-        'status' => 0,
-        'time' => now(),
-    ]);
+    // Check if total points with status 1 are less than a specific amount
 
-    return response()->json(['success' => 'Points withdrawn successfully.'], 200);
+
+
+        // If user is found, validation passes, and user has enough points, proceed with creating the history record
+        $transaction = History::create([
+            'user_id'      => $user->id,
+            'point'        => $request->input('point'),
+            'payment_type' => $request->input('payment_type'),
+            'status'       => 0,
+            'time'         => Carbon::now(),
+        ]);
+
+        // Return success response
+        return response()->json(['message' => 'Points withdrawal successful', 'status' => true], 200);
+
 
 }
+
+
 
 
 //withdraw point history
@@ -554,6 +610,33 @@ public function index()
     $gm = Games::all();
     return response()->json(['data' => $gm]);
 }
+
+public function getHistory(Request $request, $id)
+    {
+        $userHistory = History::where('user_id', $id)->get();
+
+        // $totalPointsWithdrawn = $userHistory->where('status', 1)->sum('point');
+        // $totalPointsAdded = $userHistory->where('status', 0)->sum('point');
+        // $availableBalance =$totalPointsAdded - $totalPointsWithdrawn;
+
+        $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+    // Calculate total points added
+    $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+//echo"<pre>";print_r($totalPointsAdded);exit;
+    // Calculate available balance
+    $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
+
+        $response = [
+            'userHistory' => $userHistory,
+            'totalPointsWithdrawn' => $totalPointsWithdrawn,
+            'totalPointsAdded' => $totalPointsAdded,
+            'availableBalance' => $availableBalance,
+        ];
+
+        return response()->json($response);
+    }
+
 
 
 

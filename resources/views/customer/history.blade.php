@@ -62,6 +62,8 @@
                                                     Paytm
                                                     @elseif ($historyRecord->payment_type == 3)
                                                     PhonePe
+                                                    @elseif ($historyRecord->payment_type == 4)
+                                                    GamesPlay
                                                 @else
                                                     Admin
                                                 @endif

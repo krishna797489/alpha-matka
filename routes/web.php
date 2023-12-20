@@ -110,9 +110,6 @@ Route::post('/starlinegames/delete', [StarlinegameController::class, 'delete'])-
 Route::get('/starlinegames/Gamesrated',[StarlinegameController::class, 'Gamesrated'])->name('starlinetypes.Gamesrated');
 Route::post('/starline/Gamesratedupdate',[StarlinegameController::class, 'Gamesratedpost'])->name('types.starlinerate');
 
-
-
-
 Route::get('Games/result',[GamesController::class, 'result'])->name('games.result');
 
 

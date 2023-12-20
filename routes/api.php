@@ -83,5 +83,5 @@ Route::get('/bidhistory/{id}', [ApiController::class, 'bidHistory']);
 //contact get api
 Route::get('/getContact', [ApiController::class, 'getContact']);
 
-  
+Route::get('/user/{id}/history', [ApiController::class, 'getHistory']);
 
