@@ -26,16 +26,16 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-   
+
         <div class="row" id="dashboard">
 
-          
+
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                
-                <h3 class="m-b-0" id="customers">-</h3>            
+
+                <h3 class="m-b-0" id="customers">-</h3>
                 <p>Total No. of Customers</p>
               </div>
               <div class="icon">
@@ -55,48 +55,48 @@
               <div class="icon">
                 {{-- <i class="ion ion-stats-bars"></i> --}}
               </div>
-              
+
             </div>
-          </div> 
+          </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3 id="standers">-</h3>
+                <h3 id="enablegames">-</h3>
 
-                <p>Total No. of Enabled User</p>
+                <p>Total No. of Enabled Games</p>
               </div>
               <div class="icon">
                 {{-- <i class="ion ion-person-add"></i> --}}
               </div>
-             
+
             </div>
-          </div> 
+          </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3 id="subjects">-</h3>
+                <h3 id="todaybid">-</h3>
 
-                <p>Total No. of Enabled User</p>
+                <p>Today BID Amount</p>
               </div>
               <div class="icon">
                 {{-- <i class="ion ion-pie-graph"></i> --}}
               </div>
-             
+
             </div>
-          </div> 
-     
+          </div>
+
           <!-- ./col -->
         </div>
-  
+
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
- 
+
 
   <script>
 function get(){
@@ -111,7 +111,9 @@ function get(){
   success: function (data) {
     $("#customers").text(data.customers);
     $("#games").text(data.games);
-   
+    $("#enablegames").text(data.enablegames);
+    $("#todaybid").text(data.todaybid);
+
   },
  });
 }
@@ -119,6 +121,6 @@ function get(){
   <script>
     $(document).ready(function () {
        get();
-    }); 
- </script> 
+    });
+ </script>
 @endsection

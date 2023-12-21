@@ -255,14 +255,14 @@ public function changePassword(Request $request, $id)
 //types games
 public function participate(Request $request, $id)
 {
-    $validator = Validator::make($request->all(), [
-        'g_id' => 'required|exists:games,id',
+    // $validator = Validator::make($request->all(), [
+    //     'g_id' => 'required|exists:games,id',
 
-    ]);
+    // ]);
 
-    if ($validator->fails()) {
-        return response()->json(['status' => false, 'message' => 'Validation Error..', "errors" =>  $validator->errors()]);
-    }
+    // if ($validator->fails()) {
+    //     return response()->json(['status' => false, 'message' => 'Validation Error..', "errors" =>  $validator->errors()]);
+    // }
     // Find the user by their id in the users table
     $user = User::find($id);
     if (!$user) {
