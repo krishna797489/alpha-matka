@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Customer;
+use App\Games;
 use App\history;
 use App\typegames;
 use App\User;
@@ -91,12 +92,23 @@ public function history(Request $request, $id)
 }
 
 
-      public function bidhistory(Request $request,$id){
-        $item = typegames::where('user_id', $id)->get();
-        //  echo"<pre>";print_r($item);exit;
-        return view('customer.bid_history',compact('item'));
+public function bidhistory(Request $request, $id)
+{
+    // Fetch records from the typegames table for the specified user_id
+    $items = typegames::where('user_id', $id)->get();
 
-      }
+    // Fetch game names based on the g_id from the games table
+    foreach ($items as $item) {
+        $game = Games::find($item->g_id);
+        // echo"<pre>";print_r($game);exit;
+        // Assuming the games table has a column named 'name'
+        $item->game_name = $game->name ?? 'N/A';
+        // echo"<pre>";print_r($item);exit;
+    }
+
+    return view('customer.bid_history', compact('items',));
+}
+
 
 //     public function History(Request $request, $id)
 // {

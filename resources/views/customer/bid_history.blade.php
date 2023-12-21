@@ -47,10 +47,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($item as $historyRecord)
+                                    @forelse ($items  as $historyRecord)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{$historyRecord->game_id}}</td>
+                                            <td>{{$historyRecord->game_name}}</td>
 
                                             <td>
                                                 @if ($historyRecord->game_id == 1)

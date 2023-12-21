@@ -14,8 +14,25 @@
 .bootstrap-datetimepicker-widget.dropdown-menu  {
     width: 250px;
 }
+body.sidebar-mini.layout-fixed.sidebar-collapse aside.main-sidebar.sidebar-dark-primary.elevation-4{
+    display: none;
+}
+body.sidebar-mini.layout-fixed.sidebar-collapse nav.main-header.navbar.navbar-expand.navbar-white.navbar-light{
+    margin-left: 1rem!important;
+}
+body.sidebar-mini.layout-fixed.sidebar-collapse .content-wrapper{
+    margin-left: 4.6rem!important;
+}
+body.sidebar-mini.layout-fixed aside.main-sidebar.sidebar-dark-primary.elevation-1{
+    display: block;
+}
 
-
+/* body.sidebar-mini.layout-fixed nav.main-header.navbar.navbar-expand.navbar-white.navbar-light{
+    margin-left: 269px;
+}
+body.sidebar-mini.layout-fixed .content-wrapper{
+    margin-left: 1rem!important;
+} */
   </style>
   <!-- Google Font: Source Sans Pro -->
 
