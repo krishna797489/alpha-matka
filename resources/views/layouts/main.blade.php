@@ -4,36 +4,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dev Mataka</title>
+  <title>Dev Matka</title>
 
-  <style>
-    .input-mandatory{
-  color: rgba(240, 12, 12, 0.945);
-}
 
-.bootstrap-datetimepicker-widget.dropdown-menu  {
-    width: 250px;
-}
-body.sidebar-mini.layout-fixed.sidebar-collapse aside.main-sidebar.sidebar-dark-primary.elevation-4{
-    display: none;
-}
-body.sidebar-mini.layout-fixed.sidebar-collapse nav.main-header.navbar.navbar-expand.navbar-white.navbar-light{
-    margin-left: 1rem!important;
-}
-body.sidebar-mini.layout-fixed.sidebar-collapse .content-wrapper{
-    margin-left: 4.6rem!important;
-}
-body.sidebar-mini.layout-fixed aside.main-sidebar.sidebar-dark-primary.elevation-1{
-    display: block;
-}
-
-/* body.sidebar-mini.layout-fixed nav.main-header.navbar.navbar-expand.navbar-white.navbar-light{
-    margin-left: 269px;
-}
-body.sidebar-mini.layout-fixed .content-wrapper{
-    margin-left: 1rem!important;
-} */
-  </style>
   <!-- Google Font: Source Sans Pro -->
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -224,7 +197,7 @@ body.sidebar-mini.layout-fixed .content-wrapper{
     <!-- Brand Logo -->
     <a href="{{route('dashboard')}}" class="brand-link">
       <!-- <img src="#" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-      <span class="brand-text font-weight-light">Dev Mataka App</span>
+      <span class="brand-text font-weight-light" style="margin: 25px;">Dev Matka App</span>
     </a>
 
     <!-- Sidebar -->
@@ -248,6 +221,7 @@ body.sidebar-mini.layout-fixed .content-wrapper{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
+
                @php
               $uicongfig['active'] = isset($uicongfig['active'])?$uicongfig['active']:"";
            @endphp
@@ -260,104 +234,254 @@ body.sidebar-mini.layout-fixed .content-wrapper{
             </a>
           </li>
 
-          <li class="nav-item">
-            <a  class="nav-link {{ ($uicongfig['active'] == 'Games & Number') ? 'active' : '' }}" data-toggle="collapse" href="#gamesCollapse">
-                <i class="fa fa-hashtag"></i> Games & Number
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCollapse">
-                <ul class="nav child_menu" style="flex-direction: column;position: relative; margin-left: 5vh;list-style: circle; color: white">
-                    <li><a href="{{ route('types.games') }}">Single Digit</a></li>
-                    <li><a href="{{ route('types.JodiDigit') }}">Jodi Digit</a></li>
-                    <li><a href="{{ route('types.SinglePana') }}">Single Pana</a></li>
-                    <li><a href="{{ route('types.DoublePana') }}">Double Pana</a></li>
-                    <li><a href="{{ route('types.TripplePana') }}">Tripple Pana</a></li>
-                    <li><a href="{{ route('types.HalfSangamNumbers') }}">Half Sangam</a></li>
-                    <li><a href="{{ route('types.FullSangam') }}">Full Sangam</a></li>
-                </ul>
-            </div>
-        </li>
 
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesCollapsing" role="button">
-                <i class="fa fa-gamepad"></i> Games Management
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCollapsing">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="{{route('games.index')}}">Game Name</a></li>
-                    <li><a href="{{route('types.Gamesrated')}}">Game Rates</a></li>
-                    <li><a href="{{route('howtoplay')}}">How To Play</a></li>
+            <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-hashtag"></i>
+                    <p>
+                        Games & Number
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.games') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Single Digit</p>
+                    </a>
+                  </li>
                 </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesColl" role="button">
-                <i class="fa fa-user"></i> User Managment
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesColl">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="{{route('customer.index')}}">User Managment</a></li>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.JodiDigit') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Jodi Digit</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.SinglePana') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Single Pana</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.DoublePana') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Double Pana</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.TripplePana') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tripple Pana</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.HalfSangamNumbers') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Half Sangam</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('types.FullSangam') }}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Full Sangam</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesCol" role="button">
-                <i class="fa fa-bug"></i> Starline Game
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCol">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="{{route('starline')}}">Game name</a></li>
-                    <li><a href="{{route('starlinetypes.Gamesrated')}}">Starline Rates</a></li>
-                    <li><a href="#">Bid History</a></li>
-                    <li><a href="#">Declare Result</a></li>
-                    <li><a href="#">Starline Result History</a></li>
 
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-gamepad"></i>
+                    <p>
+                        Games Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('games.index')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Game Name</p>
+                    </a>
+                  </li>
                 </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesCo" role="button">
-                <i class="fa fa-university"></i> Wallet Management
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCo">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="{{route('withdrawadmin')}}">Withdraw fund(User Wallet)</a></li>
-                    <li><a href="{{route('addfunduser')}}">Add Fund(User Wallet)</a></li>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('types.Gamesrated')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Game Rates</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('howtoplay')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>How To Play</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesCoo" role="button">
-                <i class="fa fa-university"></i> Result Management
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCoo">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="{{route('games.result')}}">Declare Result</a></li>
-                    <li><a href="#">Result History</a></li>
 
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-user"></i>
+                    <p>
+                        User Managment
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('customer.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>User Managment</p>
+                    </a>
+                  </li>
                 </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#gamesCotf" role="button">
-                <i class="fa fa-cog"></i> Settings Management
-                <span class="fa fa-chevron-down"></span>
-            </a>
-            <div class="collapse" id="gamesCotf">
-                <ul class="nav child_menu" style="flex-direction: column; position: relative; margin-left: 5vh; list-style: circle; color: white;">
-                    <li><a href="#">Admin Settings Managment</a></li>
-                    <li><a href="{{route('contactmanagemnt')}}">Contact Settings Management</a></li>
-                </ul>
-            </div>
-        </li>
+              </li>
 
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-bug"></i>
+                    <p>
+                       Starline Game
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('starline')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Game Name</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('starlinetypes.Gamesrated')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Starline Rates</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Bid History</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Declare Result</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Starline Result History</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-university"></i>
+                    <p>
+                      Wallet Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('withdrawadmin')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Withdraw fund(Wallet)</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('addfunduser')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add Fund(Wallet)</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-university"></i>
+                    <p>
+                     Result Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('games.result')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Declare Result</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Result History</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-cog"></i>
+                    <p>
+                    Settings Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Admin Settings Managment</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('contactmanagemnt')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Contact Settings Management</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
           <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
@@ -383,7 +507,7 @@ body.sidebar-mini.layout-fixed .content-wrapper{
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="#">Dev Mataka App</a>.</strong>
+    <strong>Copyright &copy; 2014-2021 <a href="#">Dev Matka App</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0

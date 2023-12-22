@@ -342,11 +342,11 @@ public function bidhistory(Request $request, $id)
               })
               ->addColumn('action', function ($row) {
                   // Add "History" button to view customer history
-                  $historyButton = '<a href="History/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm mr-2" onclick="viewHistory(' . $row->id . ')">History</a>';
-                  $BIDhistory = '<a href="bidhistory/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm mr-2" onclick="viewHistory(' . $row->id . ')">BID</a>';
+                  $historyButton = '<a href="History/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-2" onclick="viewHistory(' . $row->id . ')">History</a>';
+                  $BIDhistory = '<a href="bidhistory/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-2" onclick="viewHistory(' . $row->id . ')">BID</a>';
 
                   // View button for customer details
-                  $viewButton = '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm mr-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
+                  $viewButton = '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm m-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
 
                   return $historyButton . $viewButton.$BIDhistory;
               })

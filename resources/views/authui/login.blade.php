@@ -5,7 +5,7 @@
       <!-- /.login-logo -->
       <div class="card card-outline card-primary">
         <div class="card-header text-center">
-          <a href="#" class="h1"><b>Dev Mataka App</b></a>
+          <a href="#" class="h1"><b>Dev Matka App</b></a>
         </div>
         <div class="card-body">
           <p class="login-box-msg">Sign in to start your session</p>
@@ -36,11 +36,9 @@
              @endif
               <!-- /.col -->
               <div class="col-4">
-                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                <button type="submit" class="btn btn-outline-primary" style="margin: -7px;">Sign In</button>
               </div>
-              <p class="mb-1">
-                <a href="{{route('login.forgot')}}">I forgot my password</a>
-              </p>
+
               <!-- /.col -->
             </form>
             </div>

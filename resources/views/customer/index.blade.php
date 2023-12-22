@@ -39,9 +39,9 @@
                       <th>#</th>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>phone</th>
+                      <th>Phone</th>
                       <th>Mpin</th>
-                      <th>created_at</th>
+                      <th>Created_at</th>
                       <th>Action</th>
                       <th>Detail</th>
 
