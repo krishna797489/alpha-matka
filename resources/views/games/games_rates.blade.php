@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Game Rates Managment</h1>
+            <h1>Game Rates</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -54,84 +54,84 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Jodi Digit Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Jodi_Digit1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Jodi_Digit1" required class="form-control" id="exampleInputEmail1" placeholder="Jodi Digit Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Jodi Digit Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Jodi_Digit1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Jodi_Digit1" required class="form-control" id="exampleInputEmail1" placeholder="Jodi Digit Value 2">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Single Pana Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Single_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Single_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Single Pana Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Single Pana Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Single_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Single_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Single Pana Value 2">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Double Pana Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Double_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Double_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Double Pana Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Double Pana Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Double_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Double_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Double Pana Value 2">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Tripple Pana Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Tripple_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Tripple_Pana1" required class="form-control" id="exampleInputEmail1" placeholder="Tripple Pana Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Tripple Pana Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Tripple_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Tripple_Pana2" required class="form-control" id="exampleInputEmail1" placeholder="Tripple Pana Value 2">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Half Sangam Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Half_Sangam1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Half_Sangam1" required class="form-control" id="exampleInputEmail1" placeholder="Half Sangam Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Half Sangam Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Half_Sangam2" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Half_Sangam2" required class="form-control" id="exampleInputEmail1" placeholder="Half Sangam Value 2">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Full Sangam Value 1<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Full_Sangam1" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Full_Sangam1" required class="form-control" id="exampleInputEmail1" placeholder="Full Sangam Value 1">
 
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="email">Full Sangam Value 2<span class="input-mandatory">*</span></label>
-                                  <input type="number" name="Full_Sangam2" required class="form-control" id="exampleInputEmail1" placeholder="Single Digit Value 2">
+                                  <input type="number" name="Full_Sangam2" required class="form-control" id="exampleInputEmail1" placeholder="Full Sangam Value 2">
 
                                 </div>
                               </div>

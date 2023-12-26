@@ -229,7 +229,7 @@
             <a href="{{route('dashboard')}}" class="nav-link {{($uicongfig['active'] == 'dashboard')?'active':''}}">
               <i class="fa fa-home"></i>
               <p>
-                Dashboard
+             Dashboard
               </p>
             </a>
           </li>
@@ -239,7 +239,7 @@
                 <a href="#" class="nav-link">
                     <i class="fa fa-hashtag"></i>
                     <p>
-                        Games & Number
+                    Games & Number
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
@@ -417,7 +417,7 @@
                   <li class="nav-item">
                     <a href="{{route('withdrawadmin')}}" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Withdraw fund(Wallet)</p>
+                      <p>Withdraw Fund (Wallet)</p>
                     </a>
                   </li>
                 </ul>
@@ -425,7 +425,7 @@
                   <li class="nav-item">
                     <a href="{{route('addfunduser')}}" class="nav-link active">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Add Fund(Wallet)</p>
+                      <p>Add Fund (Wallet)</p>
                     </a>
                   </li>
                 </ul>
@@ -485,7 +485,7 @@
 
           <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
-              <i class="fas fa-power-off nav-icon"></i>
+              <i class="fas fa-power-off"></i>
               <p>
                 Logout
               </p>
