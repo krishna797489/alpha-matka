@@ -35,7 +35,7 @@ class LoginController extends Controller
                 return [
                     'data' => $user,
                     'status' => true,
-                    'message' => 'Successfully Login'
+                    'message' => 'Successfully Log in'
                 ];
             }
             return [
