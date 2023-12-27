@@ -115,5 +115,4 @@ Route::get('Games/result',[GamesController::class, 'result'])->name('games.resul
 
 
 
-
 });

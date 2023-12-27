@@ -162,46 +162,6 @@ public function bidhistory(Request $request, $id)
     return view('customer.debit_fund_user', ['users' => $users]);
     }
 
-//     public function withdrabyadmin(Request $request)
-// {
-//     $request->validate([
-//         'user'  => 'required|exists:users,id',
-//         'point' => 'required|numeric|min:0',
-//     ]);
-
-//     $user = User::find($request->input('user'));
-
-//     // Calculate available balance
-//     $availableBalance = $user->histories()
-//         ->where('status', 1) // Only consider added points
-//         ->sum('point');
-
-//     // Check if the user has enough points
-//     $withdrawalAmount = $request->input('point');
-
-//     // Check if withdrawal amount is greater than available balance
-//     if ($withdrawalAmount > $availableBalance) {
-//         return redirect()->back()->with('error', 'Insufficient points available for withdrawal.');
-//     }
-
-//     // Create withdrawal transaction
-//     $transaction = History::create([
-//         'user_id' => $user->id,
-//         'point'   => $withdrawalAmount, // Use the withdrawal amount, not the input
-//         'status'  => 0,
-//         'time'    => Carbon::now(),
-//     ]);
-
-//     // Subtract the withdrawal amount from the available balance
-//     $updatedBalance = $availableBalance - $withdrawalAmount;
-
-//     // Perform any other actions here, if needed
-
-//     // Redirect or return a response with the updated balance
-//     return redirect()->back()->with('success', 'Points withdrawal successful. Updated balance: ' . $updatedBalance);
-// }
-
- // Assuming History model is in the "App\Models" namespace
 
  public function withdrabyadmin(Request $request)
  {
@@ -342,11 +302,11 @@ public function bidhistory(Request $request, $id)
               })
               ->addColumn('action', function ($row) {
                   // Add "History" button to view customer history
-                  $historyButton = '<a href="History/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-2" onclick="viewHistory(' . $row->id . ')">History</a>';
-                  $BIDhistory = '<a href="bidhistory/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-2" onclick="viewHistory(' . $row->id . ')">BID</a>';
+                  $historyButton = '<a href="History/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-1" onclick="viewHistory(' . $row->id . ')">History</a>';
+                  $BIDhistory = '<a href="bidhistory/' . $row->id . '" type="button" class="btn btn-outline-primary btn-sm m-1" onclick="viewHistory(' . $row->id . ')">BID</a>';
 
                   // View button for customer details
-                  $viewButton = '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm m-2" onclick="viewCustomer(' . $row->id . ')">View</a>';
+                  $viewButton = '<a href="employees/' . $row->id . '" type="button" class="btn btn-outline-info btn-sm m-1" onclick="viewCustomer(' . $row->id . ')">View</a>';
 
                   return $historyButton . $viewButton.$BIDhistory;
               })

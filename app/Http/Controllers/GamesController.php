@@ -246,7 +246,9 @@ if ($validator->fails()) {
         ->make(true);
 }
     public function result(){
-        return view('customer.result');
+        $users = Games::all();
+        // Pass the user data to the view
+        return view('customer.result', ['users' => $users]);
     }
 public  function status(Request $request)
  {
@@ -382,6 +384,17 @@ public  function status(Request $request)
 
 
 }
+
+public function showGamesResult(){
+    $users = Games::all();
+// Pass the user data to the view
+return view('customer.result', ['users' => $users]);
+}
+// public function showGamesResult()
+// {
+//     $games = Games::all();
+//     return view('customer.result', ['games' => $games]);
+// }
 }
 
 
