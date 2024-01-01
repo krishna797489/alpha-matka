@@ -87,53 +87,23 @@
 
         <form action="#" method="post" id="resultform" class="display_none">
             <div class="row display_none" id="result_div">
-                <div class="col-12 col-sm-12 col-lg-12">
+                <div class="col-12 col-sm-12 col-lg-12" >
                     <div class="row">
                         <!-- Close Result Box -->
-                        <div class="col-sm-12 col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group bord col-md-5">
-                                            <h5 class="tit_h">Open</h5>
-                                        </div>
-                                        <div class="form-group bord col-md-4">
-                                            <label class="col-form-label">Panna:</label>
-                                            <input style="width: 150%" class="form-control" type="number"
-                                                name="open_number" required id="open_number" value=""
-                                                placeholder="Enter 3 Digit Value">
+                        <div class="col-sm-12 col-md-6" >
+                            <div class="card" style="width: 446px; margin: 8px;">
+                                <div class="card-body" style="padding: 10px; width: 600px;">
 
-                                            <label class="col-form-label">Result:</label>
-                                            <input style="width: 150%" class="form-control" type="number"
-                                                name="open_result" id="open_result" value="" placeholder="Result">
-                                        </div>
-                                        <div class="form-group bord col-md-4" id="open_div_msg">
-                                            <button type="button" class="btn btn-primary waves-light m-t-10"
-                                                id="openSaveBtn" name="openSaveBtn" onclick="OpenSaveData();">Save</button>
-                                            <button type="button" class="btn btn-primary waves-light m-t-10 display_none"
-                                                id="openDecBtn" name="openDecBtn"
-                                                onclick="decleareOpenResult();">Declare</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Open Result Box -->
-                    <div class="col-sm-12 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
                                     <div class="form-group bord col-md-5">
-                                        <h5 class="tit_h">Close</h5>
+                                        <h5 class="tit_h">Open</h5>
                                     </div>
                                     <div class="form-group bord col-md-4">
                                         <label class="col-form-label">Panna:</label>
-                                        <input style="width: 150%" class="form-control" type="number" name="open_number"
+                                        <input style="width: 100%" class="form-control" type="number" name="open_number"
                                             required id="open_number" value="" placeholder="Enter 3 Digit Value">
 
                                         <label class="col-form-label">Result:</label>
-                                        <input style="width: 150%" class="form-control" type="number"
+                                        <input style="width: 100%;" class="form-control" type="number"
                                             name="open_result" id="open_result" value="" placeholder="Result">
                                     </div>
                                     <div class="form-group bord col-md-7" id="open_div_msg">
@@ -146,7 +116,40 @@
                                 </div>
                             </div>
                         </div>
+
+                     <!-- Open Result Box -->
+
+                    <div class="col-sm-12 col-md-5" style="margin-top: 8px; margin-left: -9%; width: 100%;">
+                        <div class="card" style="width: 446px ">
+                            <div class="card-body" style="padding: 10px; width: 600px;">
+
+                                    <div class="form-group bord col-md-5">
+                                        <h5 class="tit_h">Close</h5>
+                                    </div>
+                                    <div class="form-group bord col-md-4">
+                                        <label class="col-form-label">Panna:</label>
+                                        <input style="width: 100%;" class="form-control" type="number" name="open_number"
+                                            required id="open_number" value="" placeholder="Enter 3 Digit Value">
+
+                                        <label class="col-form-label">Result:</label>
+                                        <input style="width: 100%;" class="form-control" type="number"
+                                            name="open_result" id="open_result" value="" placeholder="Result">
+                                    </div>
+                                    <div class="form-group bord col-md-7" id="open_div_msg">
+                                        <button type="button" class="btn btn-primary waves-light m-t-10"
+                                            id="openSaveBtn" name="openSaveBtn" onclick="OpenSaveData();">Save</button>
+                                        <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
+                                            id="openDecBtn" name="openDecBtn"
+                                            onclick="decleareOpenResult();">Declare</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        </div>
                     </div>
+
+
                     <div class="form-group">
                         <div id="error2"></div>
                     </div>
