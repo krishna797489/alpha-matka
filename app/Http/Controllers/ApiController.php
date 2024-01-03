@@ -10,6 +10,7 @@ use App\User;
 use App\Games;
 use App\history;
 use App\Log;
+use App\Notification;
 use App\Result;
 use App\singlepanna;
 use App\typegames;
@@ -529,6 +530,14 @@ class ApiController extends Controller
             ->select('typegames.session_type', 'typegames.user_id', 'typegames.digit', 'results.created_at', 'games.name as game_name')
             ->get();
         return response()->json($typesGameData);
+    }
+
+
+    public function notificationget(){
+        $notifications = Notification::select('tittle', 'content', 'created_at')
+        ->orderBy('created_at', 'desc')->take(5) 
+        ->get();
+            return response()->json($notifications);
     }
 
 }

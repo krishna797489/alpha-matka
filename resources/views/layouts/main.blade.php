@@ -433,7 +433,7 @@
 
               <li class="nav-item menu-close">
                 <a href="#" class="nav-link">
-                    <i class="fa fa-university"></i>
+                    <i class="fa fa-trophy"></i>
                     <p>
                      Result Management
                       <i class="right fas fa-angle-left"></i>
@@ -481,6 +481,25 @@
                     </a>
                   </li>
                 </ul>
+              </li>
+
+              <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <i class="fa fa-bell"></i>
+                    <p>
+                    Notice Management
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('notification')}}" class="nav-link active">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Send Notification</p>
+                    </a>
+                  </li>
+                </ul>
+
               </li>
 
           <li class="nav-item">

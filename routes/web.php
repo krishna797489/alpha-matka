@@ -127,5 +127,8 @@ Route::post('selectgame', [CustomerController::class, 'selectgame'])->name('sele
 Route::get('resulthistory', [CustomerController::class, 'resulthistory'])->name('resulthistory');
 // Route::get('getresult', [CustomerController::class, 'getresult'])->name('getresult');
 
+Route::get('notification', [CustomerController::class, 'notification'])->name('notification');
+Route::post('notificationstore', [CustomerController::class, 'notificationstore'])->name('notificationstore');
+
 
 });

@@ -87,3 +87,7 @@ Route::get('/user/{id}/history', [ApiController::class, 'getHistory']);
 
 //result se related
 Route::get('/getresulthistory', [ApiController::class, 'getresulthistory']);
+
+//notificationget related
+Route::get('/notificationget', [ApiController::class, 'notificationget']);
+

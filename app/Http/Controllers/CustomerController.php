@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\Games;
 use App\history;
+use App\Notification;
 use App\Result;
 use App\typegames;
 use App\User;
@@ -539,6 +540,7 @@ public function update(Request $request)
 
         return redirect()->back()->with('success', 'Result Declear Successfully');
     }
+
     public function resulthistory(){
 
         $history = Result::orderBy('created_at', 'desc')->get();
@@ -546,6 +548,30 @@ public function update(Request $request)
         return view('customer.result_history', array('history' => $history));;
 
     }
+    public function notification(){
+        return view('customer.notification');
+    }
+    public function notificationstore(Request $request)
+    {
 
+        $validator = Validator::make($request->all(), [
+
+            'tittle' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $user = Notification::create([
+
+            'tittle' => $request->input('tittle'),
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->route('notification')->with('success', 'Notification Sent successfully');
+    }
 
 }

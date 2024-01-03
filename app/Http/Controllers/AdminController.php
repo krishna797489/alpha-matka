@@ -43,10 +43,7 @@ public function listUserType0(Request $request)
             return $row->mpin ? $row->mpin : 'No Mpin';
         })
 
-        // ->addColumn('usertype', function ($row) {
-        //     // Your action button code
-        // })
-
+        
 
         ->rawColumns([''])
         ->make(true);
