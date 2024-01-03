@@ -10,6 +10,7 @@ use App\User;
 use App\Games;
 use App\history;
 use App\Log;
+use App\Result;
 use App\singlepanna;
 use App\typegames;
 use App\UserOtp;
@@ -636,6 +637,36 @@ public function getHistory(Request $request, $id)
 
         return response()->json($response);
     }
+
+    public function getresulthistory(){
+        // Retrieve all results with their associated typegame
+        $history = Result::with('typegame')->get();
+
+        // Transform the results to include both result and filtered typegame data
+        $transformedHistory = $history->map(function ($result) {
+            $user_id = $result->user_id;
+
+            // Retrieve all typegame data and filter based on matching the first digit
+            $typeGameData = typegames::all()->filter(function ($typeGame) use ($user_id) {
+                // Extract the first digit from g_id and user_id
+                $first_digit_user_id = substr($user_id, 0, 1);
+                $first_digit_g_id = substr($typeGame->g_id, 0, 1);
+
+                // Check if the first digit from user_id matches the first digit from g_id
+                return $first_digit_user_id === $first_digit_g_id;
+            });
+
+            return [
+                'user_id' => $user_id,
+                'result_data' => $result->toArray(),
+                'typegame_data' => $typeGameData->toArray(),
+            ];
+        });
+
+        return response()->json(['history' => $transformedHistory]);
+    }
+
+
 
 
 

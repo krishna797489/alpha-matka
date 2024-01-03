@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -112,7 +113,19 @@ Route::post('/starline/Gamesratedupdate',[StarlinegameController::class, 'Gamesr
 
 Route::get('Games/result',[GamesController::class, 'result'])->name('games.result');
 
+//admin related
+Route::get('admin/userlist',[AdminController::class, 'adminuserlist'])->name('adminuserlist');
+Route::get('/user-type-0-list', [AdminController::class, 'listUserType0'])->name('user.type0.list');
+Route::post('/Admin/add', [AdminController::class, 'store'])->name('admin.store');
 
+// Route::get('admin/userlist',[AdminController::class, 'adminuser'])->name('adminuser');
+//  Route::get('admin/userlist', [AdminController::class, 'adminlist'])->name('adminlist');
+
+
+//result se related
+Route::post('selectgame', [CustomerController::class, 'selectgame'])->name('selectgame');
+Route::get('resulthistory', [CustomerController::class, 'resulthistory'])->name('resulthistory');
+// Route::get('getresult', [CustomerController::class, 'getresult'])->name('getresult');
 
 
 });

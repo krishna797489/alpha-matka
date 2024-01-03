@@ -85,3 +85,5 @@ Route::get('/getContact', [ApiController::class, 'getContact']);
 
 Route::get('/user/{id}/history', [ApiController::class, 'getHistory']);
 
+//result se related
+Route::get('/getresulthistory', [ApiController::class, 'getresulthistory']);

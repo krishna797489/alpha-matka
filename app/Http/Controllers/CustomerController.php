@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\Games;
 use App\history;
+use App\Result;
 use App\typegames;
 use App\User;
 use Carbon\Carbon;
+use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -409,7 +411,6 @@ public function bidhistory(Request $request, $id)
       $cust->phone = $request->phone;
       $cust->password = Hash::make($request->password);
        //echo"<pre>";print_r($cust->toArray());exit;
-      // $cust->save();
       if ($cust->save()) {
 
         return redirect()->route('customer.index')->with('success','customer has been created successfully.');
@@ -447,27 +448,21 @@ public function update(Request $request)
             ->withInput();
     }
 
-    // Retrieve the old customer data
     $cust = Customer::where('id', $request->id)->first();
 
-    // Handle the image upload
     if ($request->hasFile('image')) {
-        // Generate a unique filename for the new image
         $fileName = time() . '.' . $request->image->getClientOriginalName();
 
-        // Move the new image to the upload directory
         $request->image->move(public_path('upload/image'), $fileName);
 
-        // Check if an old image exists and unlink it
         if (file_exists(public_path('upload/image/' . $cust->image)) && $cust->image != $fileName) {
             unlink(public_path('upload/image/' . $cust->image));
         }
 
-        // Update customer information with the new image filename
         $cust->image = $fileName;
     }
 
-    // Update other customer information
+
     $cust->name = $request->name;
     $cust->email = $request->email;
     $cust->phone = $request->phone;
@@ -475,7 +470,7 @@ public function update(Request $request)
         $cust->password = Hash::make($request->password);
     }
 
-    // Save the updated customer information
+
     if ($cust->save()) {
         return redirect()->route('customer.index')->with('success', 'Customer has been updated successfully.');
     } else {
@@ -517,11 +512,39 @@ public function update(Request $request)
                 'point' => $request->input('point'),
                 'time' =>Carbon::now(),
                 'type' => $request->input('type','0'),
-                // 'amount' => $request->input('amount'),
+
             ]);
             return response()->json(['message' => 'new point successfully added', 'status' => true], 201);
         }
 
         }
+
+        //result decleare related
+        public function selectgame(Request $request)
+    {
+        $request->validate([
+            'user' => 'required',
+            'result_date' =>'required|date',
+
+
+        ]);
+
+        Result::create([
+            'user_id' => $request->input('user'),
+            'result_date' => $request->input('result_date'),
+            'Odigit' => $request->input('Odigit'),
+            'Cdigit' => $request->input('Cdigit'),
+
+        ]);
+
+        return redirect()->back()->with('success', 'Result Declear Successfully');
+    }
+    public function resulthistory(){
+        $history=Result::get();
+        // dd($history);
+        return view('customer.result_history', array('history' => $history));;
+
+    }
+
 
 }

@@ -38,7 +38,7 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="#" method="">
+                                    <form action="{{route('selectgame')}}" method="POST">
                                         @csrf
 
                                         <div class="form-group">
@@ -55,7 +55,18 @@
                                                 @endforeach
                                             </select>
                                         </div>
-
+                                        <div class="form-group bord col-md-7" id="open_div_msg">
+                                            <!-- Input fields for Open Result -->
+                                            <label class="col-form-label">Open Digit</label>
+                                            <input style="width: 100%;" class="form-control" type="number" name="Odigit"
+                                                placeholder="Enter open digit result">
+                                        </div>
+                                        <div class="form-group bord col-md-7" id="open_div_msg">
+                                            <!-- Input fields for Open Result -->
+                                            <label class="col-form-label">Close Digit</label>
+                                            <input style="width: 100%;" class="form-control" type="number" name="Cdigit" 
+                                                placeholder="Enter close digit result">
+                                        </div>
                                         <!-- Add other form fields as needed -->
                                         <div class="form-group">
                                             <label class="col-form-label">Result Date</label>
@@ -84,81 +95,67 @@
             </div>
         </div>
 
-
-        <form action="#" method="post" id="resultform" class="display_none">
+        {{-- <form action="#" method="post" id="resultform" class="display_none">
+            @csrf
             <div class="row display_none" id="result_div">
-                <div class="col-12 col-sm-12 col-lg-12" >
+                <div class="col-12 col-sm-12 col-lg-12">
                     <div class="row">
-                        <!-- Close Result Box -->
-                        <div class="col-sm-12 col-md-6" >
+                        <!-- Open Result Box -->
+                        <div class="col-sm-12 col-md-6">
                             <div class="card" style="width: 446px; margin: 8px;">
                                 <div class="card-body" style="padding: 10px; width: 600px;">
-
                                     <div class="form-group bord col-md-5">
                                         <h5 class="tit_h">Open</h5>
                                     </div>
-                                    <div class="form-group bord col-md-4">
-                                        <label class="col-form-label">Panna:</label>
-                                        <input style="width: 100%" class="form-control" type="number" name="open_number"
-                                            required id="open_number" value="" placeholder="Enter 3 Digit Value">
-
-                                        <label class="col-form-label">Result:</label>
-                                        <input style="width: 100%;" class="form-control" type="number"
-                                            name="open_result" id="open_result" value="" placeholder="Result">
-                                    </div>
                                     <div class="form-group bord col-md-7" id="open_div_msg">
-                                        <button type="button" class="btn btn-primary waves-light m-t-10"
-                                            id="openSaveBtn" name="openSaveBtn" onclick="OpenSaveData();">Save</button>
-                                        <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
-                                            id="openDecBtn" name="openDecBtn"
-                                            onclick="decleareOpenResult();">Declare</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                     <!-- Open Result Box -->
-
-                    <div class="col-sm-12 col-md-5" style="margin-top: 8px; margin-left: -9%; width: 100%;">
-                        <div class="card" style="width: 446px ">
-                            <div class="card-body" style="padding: 10px; width: 600px;">
-
-                                    <div class="form-group bord col-md-5">
+                                        <!-- Input fields for Open Result -->
+                                        <label class="col-form-label">Odigit:</label>
+                                        <input style="width: 100%;" class="form-control" type="number" name="Odigit" required
+                                            placeholder="Enter 3 Digit Value">
+                                        <div class="form-group bord col-md-5">
                                         <h5 class="tit_h">Close</h5>
                                     </div>
-                                    <div class="form-group bord col-md-4">
-                                        <label class="col-form-label">Panna:</label>
-                                        <input style="width: 100%;" class="form-control" type="number" name="open_number"
-                                            required id="open_number" value="" placeholder="Enter 3 Digit Value">
+                                        <!-- Other Open Result fields go here -->
 
-                                        <label class="col-form-label">Result:</label>
-                                        <input style="width: 100%;" class="form-control" type="number"
-                                            name="open_result" id="open_result" value="" placeholder="Result">
-                                    </div>
-                                    <div class="form-group bord col-md-7" id="open_div_msg">
-                                        <button type="button" class="btn btn-primary waves-light m-t-10"
-                                            id="openSaveBtn" name="openSaveBtn" onclick="OpenSaveData();">Save</button>
                                         <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
-                                            id="openDecBtn" name="openDecBtn"
-                                            onclick="decleareOpenResult();">Declare</button>
+                                            name="openDecBtn" onclick="decleareOpenResult();">Declare</button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
+
+                        <!-- Close Result Box -->
+                        <div class="col-sm-12 col-md-5" style="margin-top: 8px; margin-left: -9%; width: 100%;">
+                            <div class="card" style="width: 446px ">
+                                <div class="card-body" style="padding: 10px; width: 600px;">
+
+                                    <div class="form-group bord col-md-7" id="close_div_msg">
+                                        <!-- Input fields for Close Result -->
+                                        <label class="col-form-label">Cdigit:</label>
+                                        <input style="width: 100%;" class="form-control" type="number" name="Cdigit" required
+                                            placeholder="Enter 3 Digit Value">
+
+                                        <!-- Other Close Result fields go here -->
+
+                                        <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
+                                            name="closeDecBtn" onclick="decleareCloseResult();">Declare</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div id="error2"></div>
                     </div>
                 </div>
             </div>
-    </div>
+
+            <div class="form-group">
+                <div id="error2"></div>
+            </div>
+            <!-- Add other form fields or buttons if needed -->
+            <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn" onclick="toggleComponents()">Submit</button>
+        </form> --}}
+
     <!-- Add any additional form elements or buttons here -->
     <!-- For example, a submit button -->
-    </form>
 
 
 
