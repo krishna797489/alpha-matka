@@ -69,6 +69,11 @@
         <div class="modal-content">
         <div class="modal-header">
               <h4 class="modal-title">Add Admin</h4>
+              @if(session('success'))
+       <div class="alert alert-success">
+        {{ session('success') }}
+        </div>
+        @endif
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -77,53 +82,54 @@
                 <form action="post" id="form-add-games">
                     <input type="hidden" id="add-games-id" name="id" value="">
                     @csrf
+
                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">Name <span class="input-mandatory">*</span></label>
-                            <input type="text" name="name" class="form-control" placeholder="Name">
-                            <span class="text-danger error-msg name"></span>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Name <span class="input-mandatory">*</span></label>
+                                <input type="text" name="name" class="form-control" placeholder="Name">
+                                <span class="text-danger error-msg name">{{ $errors->first('name') }}</span>
+                            </div>
                         </div>
-                    </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">Mobile <span class="input-mandatory">*</span></label>
-                            <input type="text" name="phone" class="form-control" placeholder="Mobile">
-                            <span class="text-danger error-msg name"></span>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Mobile <span class="input-mandatory">*</span></label>
+                                <input type="text" name="phone" class="form-control" placeholder="Mobile">
+                                <span class="text-danger error-msg phone">{{ $errors->first('phone') }}</span>
+                            </div>
                         </div>
-                    </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">Email <span class="input-mandatory">*</span></label>
-                            <input type="text" name="email" class="form-control" placeholder="Email">
-                            <span class="text-danger error-msg name"></span>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Email <span class="input-mandatory">*</span></label>
+                                <input type="text" name="email" class="form-control" placeholder="Email">
+                                <span class="text-danger error-msg email">{{ $errors->first('email') }}</span>
+                            </div>
                         </div>
-                    </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">Password <span class="input-mandatory">*</span></label>
-                            <input type="password" name="password" class="form-control" placeholder="Password">
-                            <span class="text-danger error-msg name"></span>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Password <span class="input-mandatory">*</span></label>
+                                <input type="password" name="password" class="form-control" placeholder="Password">
+                                <span class="text-danger error-msg password">{{ $errors->first('password') }}</span>
+                            </div>
                         </div>
-                    </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="form-control-label">Mpin <span class="input-mandatory">*</span></label>
-                            <input type="text" name="mpin" class="form-control" placeholder="Mpin">
-                            <span class="text-danger error-msg name"></span>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Mpin <span class="input-mandatory">*</span></label>
+                                <input type="text" name="mpin" class="form-control" placeholder="Mpin">
+                                <span class="text-danger error-msg mpin">{{ $errors->first('mpin') }}</span>
+                            </div>
                         </div>
                     </div>
 
-
-
-
-                   </div>
-               </div>
-            <div class="modal-footer">
-                <button type="button"  onclick="addgame()" class="btn btn-primary">Save</button>
-                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </form>
+                    <div class="modal-footer">
+                        <button type="button" onclick="addgame()" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
         </div>
     </div>
   </div>

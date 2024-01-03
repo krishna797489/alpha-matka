@@ -28,7 +28,7 @@ public function histories()
      */
     protected $table = 'users';
     protected $fillable = [
-        'name', 'email', 'password', 'phone','mpin',
+        'name', 'email', 'password', 'phone','mpin','usertype',
     ];
 
 

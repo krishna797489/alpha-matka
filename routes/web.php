@@ -116,7 +116,7 @@ Route::get('Games/result',[GamesController::class, 'result'])->name('games.resul
 //admin related
 Route::get('admin/userlist',[AdminController::class, 'adminuserlist'])->name('adminuserlist');
 Route::get('/user-type-0-list', [AdminController::class, 'listUserType0'])->name('user.type0.list');
-Route::post('/Admin/add', [AdminController::class, 'store'])->name('admin.store');
+Route::post('/Admin/add', [AdminController::class, 'Adminstore'])->name('admin.store');
 
 // Route::get('admin/userlist',[AdminController::class, 'adminuser'])->name('adminuser');
 //  Route::get('admin/userlist', [AdminController::class, 'adminlist'])->name('adminlist');

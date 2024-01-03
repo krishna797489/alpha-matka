@@ -51,30 +51,28 @@ public function listUserType0(Request $request)
         ->rawColumns([''])
         ->make(true);
 }
-public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
+public function Adminstore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
 
-        'name' => 'required|string|max:255|unique:users',
-        'email' => 'required|string|email|max:255|unique:users',
-        'phone' => 'required|numeric|digits_between:6,14|unique:users',
-        'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
+            'name' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|numeric|digits_between:6,14|unique:users',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
 
-    ]);
-    $user = User::create([
+        ]);
 
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-        'phone' => $request->input('phone'),
-        'password' => Hash::make($request->input('password')),
-        'mpin' => $request->input('mpin'),
-        'usertype'=>0,
+        $user = User::create([
 
-
-    ]);
-
-    return redirect()->back()->with('success', 'Admin added successfully.');
-}
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => Hash::make($request->input('password')),
+            'mpin' => $request->input('mpin'),
+            'usertype'=>0,
+        ]);
+        return redirect()->route('adminuserlist')->with('success','customer has been created successfully.');
+    }
 
 
     }

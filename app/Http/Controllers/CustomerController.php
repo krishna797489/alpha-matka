@@ -540,7 +540,8 @@ public function update(Request $request)
         return redirect()->back()->with('success', 'Result Declear Successfully');
     }
     public function resulthistory(){
-        $history=Result::get();
+
+        $history = Result::orderBy('created_at', 'desc')->get();
         // dd($history);
         return view('customer.result_history', array('history' => $history));;
 

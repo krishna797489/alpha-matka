@@ -37,7 +37,7 @@ class ApiController extends Controller
 
         if ($user) {
             if ($user->status == 0) {
-                // User status is 0 (active)
+
                 if (Hash::check($request->password, $user->password)) {
                     if ($request->fcmtoken) {
                         $user->fcmtoken = $request->fcmtoken;
@@ -57,7 +57,7 @@ class ApiController extends Controller
                     ];
                 }
             } else {
-                // User status is 1 (disabled)
+
                 return [
                     'data' => '',
                     'status' => false,
@@ -75,155 +75,105 @@ class ApiController extends Controller
     //register api
 
     public function register(Request $request)
-{
-    $validator = Validator::make($request->all(), [
+    {
+        $validator = Validator::make($request->all(), [
 
-        'name' => 'required|string|max:255|unique:users',
-        'email' => 'required|string|email|max:255|unique:users',
-        'phone' => 'required|numeric|digits_between:6,14|unique:users',
-        'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
+            'name' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|numeric|digits_between:6,14|unique:users',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*+_-]{8,}$/',
 
-    ]);
-
-
-
-
-    $user = User::create([
-
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-        'phone' => $request->input('phone'),
-        'password' => Hash::make($request->input('password')),
-        'mpin' => $request->input('mpin'),
-
-
-    ]);
-    return response()->json(['message' => 'Registration successful','status'=>true], 201);
-
-}
-
-public function logout(Request $request)
-{
-    // Check if the user is authenticated
-    if ($request->user()) {
-        $user = $request->user();
-        // Revoke the user's token
-        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
-        return response()->json([
-            'message' => 'Logged out successfully.',
-            'status' => true
         ]);
-    } else {
+
+
+
+
+        $user = User::create([
+
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => Hash::make($request->input('password')),
+            'mpin' => $request->input('mpin'),
+
+
+        ]);
+        return response()->json(['message' => 'Registration successful', 'status' => true], 201);
+    }
+
+    public function logout(Request $request)
+    {
+
+        if ($request->user()) {
+            $user = $request->user();
+            // Revoke the user's token
+            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+            return response()->json([
+                'message' => 'Logged out successfully.',
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'User not authenticated.',
+                'status' => false
+            ], 401);
+        }
+    }
+
+
+    public function updateprofile(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:users,name,' . $request->id,
+            'email' => 'required|email|unique:users,email,' . $request->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(), 'status' => false], 400);
+        }
+
+
+        $cust = User::where('id', $request->id)->first();
+
+
+        $cust->name = $request->name;
+        $cust->email = $request->email;
+
+
+        if ($cust->save()) {
+            return response()->json(['message' => 'Customer updated successfully'], 201);
+        }
+    }
+
+
+
+
+
+
+    //get profile api
+    public function myprofile($id)
+    {
+
+        $ragister = User::select('name', 'phone', 'email')->find($id);
+
+        if (!$ragister) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Record not found'
+            ]);
+        }
+
         return response()->json([
-            'message' => 'User not authenticated.',
-            'status' => false
-        ], 401); // Return a 401 Unauthorized status
-    }
-}
-
-
-public function updateprofile(Request $request)
-{
-    // Validation rules for name and email, excluding the 'phone' field
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|unique:users,name,' . $request->id,
-        'email' => 'required|email|unique:users,email,' . $request->id,
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors(), 'status' => false], 400);
-    }
-
-    // Retrieve the old customer data
-    $cust = User::where('id', $request->id)->first();
-
-    // Update customer information
-    $cust->name = $request->name;
-    $cust->email = $request->email;
-
-    // Save the updated customer information
-    if ($cust->save()) {
-        return response()->json(['message' => 'Customer updated successfully'], 201);
-    }
-}
-
-
-
-
-    // public function generate(Request $request)
-    // {
-    //     /* Validate Data */
-    //     $request->validate([
-    //         'phone' => 'required|exists:users,phone',
-    //     ]);
-
-    //     /* Generate an OTP (Random 6-digit OTP) */
-    //     $otp = rand(100000, 999999); // Generate a random 6-digit OTP
-
-    //     /* Send the OTP via SMS (you need to implement this function) */
-    //     // Implement the code to send SMS with the OTP
-
-    //     /* Return a JSON response */
-    //     return response()->json([
-    //         'message' => 'OTP has been sent to your mobile number.',
-    //         'otp' => $otp
-    //     ]);
-    // }
-
-    // public function generateOtp(Request $request)
-    // {
-    //     $phone = $request->input('phone');
-    //     $user = User::where('phone', $phone)->first();
-
-    //     if (!$user) {
-    //         return response()->json(['error' => 'User not found'], 404);
-    //     }
-
-    //     $userOtp = UserOtp::where('id', $user->id)->latest()->first();
-    //     $now = now();
-
-    //     if ($userOtp && $now->isBefore($userOtp->expire_at)) {
-    //         return response()->json(['otp' => $userOtp->otp, 'message' => 'Existing OTP found'], 200);
-    //     }
-
-    //     // Generate a new OTP
-    //     $otp = rand(123456, 999999);
-    //     $expireAt = $now->addMinutes(10);
-
-    //     // Create a new OTP record
-    //     $userOtp = UserOtp::create([
-    //         'id' => $user->id,
-    //         'otp' => $otp,
-    //         'expire_at' => $expireAt
-    //     ]);
-
-    //     return response()->json(['otp' => $userOtp->otp, 'message' => 'New OTP generated'], 201);
-    // }
-
-
-//get profile api
-public function myprofile($id)
-{
-    // Find the record and select only the desired fields
-    $ragister = User::select('name', 'phone', 'email')->find($id);
-
-    if (!$ragister) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Record not found'
+            'success' => true,
+            'data' => $ragister
         ]);
     }
 
-    return response()->json([
-        'success' => true,
-        'data' => $ragister
-    ]);
-}
 
 
-
-//old pass throw change password
-public function changePassword(Request $request, $id)
+    //old pass throw change password
+    public function changePassword(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -253,171 +203,152 @@ public function changePassword(Request $request, $id)
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
 
-//types games
-public function participate(Request $request, $id)
-{
-    // $validator = Validator::make($request->all(), [
-    //     'g_id' => 'required|exists:games,id',
+    //types games
+    public function participate(Request $request, $id)
+    {
 
-    // ]);
 
-    // if ($validator->fails()) {
-    //     return response()->json(['status' => false, 'message' => 'Validation Error..', "errors" =>  $validator->errors()]);
-    // }
-    // Find the user by their id in the users table
-    $user = User::find($id);
-    if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
-    }
 
-    $availableBalance = $user->histories()
-    ->where('status', 1) // Only consider added points
-    ->sum('point')
-    - $user->histories()
-        ->where('status', 0) // Subtract the sum of points with status = 0
-        ->sum('point');
 
-        $withdrawalAmount = $request->input('point');
-// Check if the user has enough points
-if ($withdrawalAmount > $availableBalance ) {
-     return response()->json(['message' => 'Insufficient points available for Games Play', 'status' => false], 400);
- }
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
-    // If enough points are available, proceed with participation
-    $participation = typegames::create([
-        'game_id' => $request->input('game_id'),
-        'g_id' => $request->input('g_id'),
-        'type' => $request->input('type', 'Empty'),
-        'date' => $request->input('date'),
-        'digit' => $request->input('digit'),
-        'close_digit' => $request->input('close_digit', 'Empty'),
-        'session_type' => $request->input('session_type', 'Empty'),
-        'point' => $request->input('point'),
-        'user_id' => $user->id,
-    ]);
-
-    // Update points in the histories table
-    $user->histories()->create([
-        'point' => $withdrawalAmount, // deducting points
-        'status' => 0, // Assuming status 0 means deducted
-        'payment_type' => 4,
-        'time'=> Carbon::now(),
-    ]);
-
-    return response()->json(['message' => 'Registration successful', 'status' => true], 201);
-}
-
-//wallet se related
-
-public function addpoint(Request $request,$id){
-    $validator = Validator::make($request->all(), [
-        'payment_type' => 'required',
-        'point' => 'required|numeric|min:0', // Adjust the validation rules as needed
-    ]);
-
-    // Check if validation fails
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
-    }
-
-    $user = User::find($id);
-
-    if (!$user) {
-        return response()->json(['message' => 'User not found', 'status' => false], 404);
-    }
-
-    // If user is found and validation passes, proceed with creating the history record
-    $transaction = history::create([
-        'user_id' => $user->id,
-        'payment_type' => $request->input('payment_type'),
-        'point' => $request->input('point'),
-        'time' => Carbon::now(),
-        'status' => 1,
-    ]);
-
-    return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
-    }
-
-    public function getPointSum($id) {
-        // $result = DB::select("SELECT (SELECT SUM(point) FROM history WHERE user_id = ?) - (SELECT SUM(debit) FROM history WHERE user_id = ?) AS difference", [$user_id, $user_id]);
-        // // echo"<pre>";print_r($result);exit;
-        // if (!empty($result)) {
-        //     $difference = $result[0]->difference;
-        //     echo"<pre>";print_r($difference);exit;
-        //     return response()->json(['difference' => $difference], 200);
-        // } else {
-        //     return response()->json(['message' => 'User not found or no data available', 'status' => false], 404);
-        // }
-         // $user_id=User::Find($id);
-         $userHistory = History::where('user_id', $id)->get();
-
-         // Calculate total points withdrawn
-         $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
-
-         // Calculate total points added
-         $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
-
-         // Calculate available balance
-         $availableBalance = $totalPointsAdded- $totalPointsWithdrawn;
-
-         return response()->json([
-             'totalPointsWithdrawn' => $totalPointsWithdrawn,
-             'totalPointsAdded'     => $totalPointsAdded,
-             'availableBalance'     => $availableBalance,
-         ]);
-
-    }
-
-//add point history
-
-public function addPointsForhistory($userId) {
-    $points = DB::table('history')
-        ->select('point', 'type', 'time')
-        ->where('user_id', $userId)
-        ->where('type', 0)
-        ->whereNotNull('point')  // Exclude rows with null 'point' values
-        ->get();
-    return response()->json(['points' => $points], 200);
-}
-
-//withdraw point
-public function pointWithdraw(Request $request, $id)
-{
-    $validator = Validator::make($request->all(), [
-        'payment_type' => 'required',
-        'point'=> 'required|numeric|min:0', // Adjust the validation rules as needed
-    ]);
-
-    // Check if validation fails
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
-    }
-
-    $user = User::find($id);
-
-    if (!$user) {
-        return response()->json(['message' => 'User not found', 'status' => false], 404);
-    }
-
-    // Calculate available balance
-    $availableBalance = $user->histories()
-        ->where('status', 1) // Only consider added points
-        ->sum('point')
-        - $user->histories()
-            ->where('status', 0) // Subtract the sum of points with status = 0
+        $availableBalance = $user->histories()
+            ->where('status', 1)
+            ->sum('point')
+            - $user->histories()
+            ->where('status', 0)
             ->sum('point');
 
-            $withdrawalAmount = $request->input('point');
-// Check if the user has enough points
-if ($withdrawalAmount > $availableBalance ) {
-         return response()->json(['message' => 'Insufficient points available for withdrawal', 'status' => false], 400);
-     }
+        $withdrawalAmount = $request->input('point');
 
-    // Check if total points with status 1 are less than a specific amount
+        if ($withdrawalAmount > $availableBalance) {
+            return response()->json(['message' => 'Insufficient points available for Games Play', 'status' => false], 400);
+        }
 
 
+        $participation = typegames::create([
+            'game_id' => $request->input('game_id'),
+            'g_id' => $request->input('g_id'),
+            'type' => $request->input('type', 'Empty'),
+            'date' => $request->input('date'),
+            'digit' => $request->input('digit'),
+            'close_digit' => $request->input('close_digit', 'Empty'),
+            'session_type' => $request->input('session_type', 'Empty'),
+            'point' => $request->input('point'),
+            'user_id' => $user->id,
+        ]);
 
-        // If user is found, validation passes, and user has enough points, proceed with creating the history record
+
+        $user->histories()->create([
+            'point' => $withdrawalAmount,
+            'status' => 0,
+            'payment_type' => 4,
+            'time' => Carbon::now(),
+        ]);
+
+        return response()->json(['message' => 'Registration successful', 'status' => true], 201);
+    }
+
+    //wallet se related
+
+    public function addpoint(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment_type' => 'required',
+            'point' => 'required|numeric|min:0',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'status' => false], 404);
+        }
+
+
+        $transaction = history::create([
+            'user_id' => $user->id,
+            'payment_type' => $request->input('payment_type'),
+            'point' => $request->input('point'),
+            'time' => Carbon::now(),
+            'status' => 1,
+        ]);
+
+        return response()->json(['message' => 'New point successfully added', 'status' => true], 201);
+    }
+
+    public function getPointSum($id)
+    {
+
+        $userHistory = History::where('user_id', $id)->get();
+
+
+        $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
+
+
+        $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+
+        $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
+
+        return response()->json([
+            'totalPointsWithdrawn' => $totalPointsWithdrawn,
+            'totalPointsAdded'     => $totalPointsAdded,
+            'availableBalance'     => $availableBalance,
+        ]);
+
+    }
+
+    //add point history
+
+    public function addPointsForhistory($userId)
+    {
+        $points = DB::table('history')
+            ->select('point', 'type', 'time')
+            ->where('user_id', $userId)
+            ->where('type', 0)
+            ->whereNotNull('point')
+            ->get();
+        return response()->json(['points' => $points], 200);
+    }
+
+    //withdraw point
+    public function pointWithdraw(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment_type' => 'required',
+            'point' => 'required|numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'status' => false], 404);
+        }
+
+        $availableBalance = $user->histories()
+            ->where('status', 1)
+            ->sum('point')
+            - $user->histories()
+            ->where('status', 0)
+            ->sum('point');
+
+        $withdrawalAmount = $request->input('point');
+        if ($withdrawalAmount > $availableBalance) {
+            return response()->json(['message' => 'Insufficient points available for withdrawal', 'status' => false], 400);
+        }
+
+
         $transaction = History::create([
             'user_id'      => $user->id,
             'point'        => $request->input('point'),
@@ -426,48 +357,32 @@ if ($withdrawalAmount > $availableBalance ) {
             'time'         => Carbon::now(),
         ]);
 
-        // Return success response
         return response()->json(['message' => 'Points withdrawal successful', 'status' => true], 200);
-
-
-}
-
-
-
-
-//withdraw point history
-
-// public function withdrawPointsForhistory($userId){
-//     $points = DB::table('history')
-//     ->select('debit', 'type', 'time')
-//     ->where('user_id', $userId)
-//     ->where('type', 1)
-//     ->whereNotNull('debit')  // Exclude rows with null 'point' values
-//     ->get();
-//     return response()->json(['points' => $points], 200);
-// }
-
-public function history(Request $request, $id)
-{
-    try {
-        // Find the user by their id in the users table
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        // Retrieve history records for the specified user
-        $history = History::where('user_id', $user->id)->get();
-
-        return response()->json(['data' => $history, 'status' => true], 200);
-    } catch (\Exception $e) {
-        // Handle exceptions if any
-        return response()->json(['error' => $e->getMessage()], 500);
     }
-}
 
-public function bidHistory(Request $request, $id)
+
+
+
+
+    public function history(Request $request, $id)
+    {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            $history = History::where('user_id', $user->id)->get();
+
+            return response()->json(['data' => $history, 'status' => true], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions if any
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function bidHistory(Request $request, $id)
     {
         try {
             // Validate the user ID
@@ -496,35 +411,34 @@ public function bidHistory(Request $request, $id)
         }
     }
 
-public function gamestore(Request $request)
-{
-    $validator = Validator::make($request->all(), [
+    public function gamestore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
 
-        'name' => 'required|max:255|unique:games',
-        'start_time' => 'required',
-        'end_time' => 'required|',
-        'code'=> 'required|unique:games',
+            'name' => 'required|max:255|unique:games',
+            'start_time' => 'required',
+            'end_time' => 'required|',
+            'code' => 'required|unique:games',
 
-    ]);
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors(),'status'=>false], 400);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(), 'status' => false], 400);
+        }
+
+        $gm = Games::create([
+
+            'name' => $request->input('name'),
+            'start_time' => $request->input('start_time'),
+            'end_time' => $request->input('end_time'),
+            'code' => $request->input('code'),
+
+        ]);
+        return response()->json(['message' => 'Games successfully added', 'status' => true], 200);
     }
 
-    $gm = Games::create([
 
-        'name' => $request->input('name'),
-        'start_time' => $request->input('start_time'),
-        'end_time' => $request->input('end_time'),
-        'code' => $request->input('code'),
-
-    ]);
-    return response()->json(['message' => 'Games successfully added','status'=>true], 200);
-
-}
-
-
-public function getAllGames()
+    public function getAllGames()
     {
         $games = Games::where('status', 1)->paginate(5);
 
@@ -534,7 +448,8 @@ public function getAllGames()
 
         return response()->json($games);
     }
-public function getContact()
+
+    public function getContact()
     {
         $games = Contact::get();
 
@@ -545,88 +460,52 @@ public function getContact()
         return response()->json($games);
     }
 
-// public function gamesupdate(Request $request, $id)
-// {
-//     // Validate the incoming request data
-//     $request->validate([
-//         'name' => 'required|max:255',
-//         'start_time' => 'required',
-//         'end_time' => 'required|after:start_time',
-
-//     ]);
-
-//     // Find the item by ID
-//     $gm = Games::find($id);
-
-//     if (!$gm) {
-
-//         return response()->json(['message' => 'record not found'], 404);
-//     }
-
-//     // Update the gm with the new data
-//     $gm->name = $request->input('name');
-//     $gm->start_time = $request->input('start_time');
-//     $gm->end_time = $request->input('end_time');
-
-//     $gm->save();
-
-//     return response()->json(['message' => 'record updated successfully']);
-// }
 
 
-public function destroy($id)
-{
-    // Find the record by ID
-    $model = Games::find($id);
+    public function destroy($id)
+    {
+        // Find the record by ID
+        $model = Games::find($id);
 
-    // Check if the record exists
-    if (!$model) {
-        return response()->json(['message' => 'Record not found'], 404);
+        if (!$model) {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+
+        $model->delete();
+
+        return response()->json(['message' => 'Record deleted successfully'], 200);
     }
 
-    // Delete the record
-    $model->delete();
 
-    // Return a response indicating success
-    return response()->json(['message' => 'Record deleted successfully'], 200);
-}
+    public function showgames($id)
+    {
+        $model = Games::find($id);
 
+        if (!$model) {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
 
-public function showgames($id)
-{
-    // Find the record by ID
-    $model = Games::find($id);
-
-    // Check if the record exists
-    if (!$model) {
-        return response()->json(['message' => 'Record not found'], 404);
+        return response()->json($model, 200);
     }
 
-    // Return the retrieved record as JSON response
-    return response()->json($model, 200);
-}
+    public function index()
+    {
+        $gm = Games::all();
+        return response()->json(['data' => $gm]);
+    }
 
-public function index()
-{
-    $gm = Games::all();
-    return response()->json(['data' => $gm]);
-}
-
-public function getHistory(Request $request, $id)
+    public function getHistory(Request $request, $id)
     {
         $userHistory = History::where('user_id', $id)->get();
 
-        // $totalPointsWithdrawn = $userHistory->where('status', 1)->sum('point');
-        // $totalPointsAdded = $userHistory->where('status', 0)->sum('point');
-        // $availableBalance =$totalPointsAdded - $totalPointsWithdrawn;
+
 
         $totalPointsWithdrawn = $userHistory->where('status', 0)->sum('point');
 
-    // Calculate total points added
-    $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
-//echo"<pre>";print_r($totalPointsAdded);exit;
-    // Calculate available balance
-    $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
+
+        $totalPointsAdded = $userHistory->where('status', 1)->sum('point');
+        //echo"<pre>";print_r($totalPointsAdded);exit;
+        $availableBalance = $totalPointsAdded - $totalPointsWithdrawn;
 
         $response = [
             'userHistory' => $userHistory,
@@ -638,39 +517,18 @@ public function getHistory(Request $request, $id)
         return response()->json($response);
     }
 
-    public function getresulthistory(){
-        // Retrieve all results with their associated typegame
-        $history = Result::with('typegame')->get();
+    public function getresulthistory()
+    {
+        $results = Result::select('Odigit')->get();
 
-        // Transform the results to include both result and filtered typegame data
-        $transformedHistory = $history->map(function ($result) {
-            $user_id = $result->user_id;
+        $OdigitValues = $results->pluck('Odigit');
 
-            // Retrieve all typegame data and filter based on matching the first digit
-            $typeGameData = typegames::all()->filter(function ($typeGame) use ($user_id) {
-                // Extract the first digit from g_id and user_id
-                $first_digit_user_id = substr($user_id, 0, 1);
-                $first_digit_g_id = substr($typeGame->g_id, 0, 1);
-
-                // Check if the first digit from user_id matches the first digit from g_id
-                return $first_digit_user_id === $first_digit_g_id;
-            });
-
-            return [
-                'user_id' => $user_id,
-                'result_data' => $result->toArray(),
-                'typegame_data' => $typeGameData->toArray(),
-            ];
-        });
-
-        return response()->json(['history' => $transformedHistory]);
+        $typesGameData = typegames::join('results', 'typegames.digit', '=', 'results.Odigit')
+            ->join('games', 'typegames.g_id', '=', 'games.id')
+            ->whereIn('typegames.digit', $OdigitValues)
+            ->select('typegames.session_type', 'typegames.user_id', 'typegames.digit', 'results.created_at', 'games.name as game_name')
+            ->get();
+        return response()->json($typesGameData);
     }
 
-
-
-
-
-
 }
-
-
