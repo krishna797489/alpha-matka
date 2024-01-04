@@ -15,7 +15,7 @@
                         </ol>
                     </div>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
 
         <div class="container-fluid">
@@ -56,18 +56,15 @@
                                             </select>
                                         </div>
                                         <div class="form-group bord col-md-7" id="open_div_msg">
-                                            <!-- Input fields for Open Result -->
                                             <label class="col-form-label">Open Digit</label>
                                             <input style="width: 100%;" class="form-control" type="number" name="Odigit"
                                                 placeholder="Enter open digit result">
                                         </div>
                                         <div class="form-group bord col-md-7" id="open_div_msg">
-                                            <!-- Input fields for Open Result -->
                                             <label class="col-form-label">Close Digit</label>
-                                            <input style="width: 100%;" class="form-control" type="number" name="Cdigit" 
+                                            <input style="width: 100%;" class="form-control" type="number" name="Cdigit"
                                                 placeholder="Enter close digit result">
                                         </div>
-                                        <!-- Add other form fields as needed -->
                                         <div class="form-group">
                                             <label class="col-form-label">Result Date</label>
                                             <div class="input-group" style="width: 33%;">
@@ -80,7 +77,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Add other form fields as needed -->
 
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn"
@@ -95,80 +91,14 @@
             </div>
         </div>
 
-        {{-- <form action="#" method="post" id="resultform" class="display_none">
-            @csrf
-            <div class="row display_none" id="result_div">
-                <div class="col-12 col-sm-12 col-lg-12">
-                    <div class="row">
-                        <!-- Open Result Box -->
-                        <div class="col-sm-12 col-md-6">
-                            <div class="card" style="width: 446px; margin: 8px;">
-                                <div class="card-body" style="padding: 10px; width: 600px;">
-                                    <div class="form-group bord col-md-5">
-                                        <h5 class="tit_h">Open</h5>
-                                    </div>
-                                    <div class="form-group bord col-md-7" id="open_div_msg">
-                                        <!-- Input fields for Open Result -->
-                                        <label class="col-form-label">Odigit:</label>
-                                        <input style="width: 100%;" class="form-control" type="number" name="Odigit" required
-                                            placeholder="Enter 3 Digit Value">
-                                        <div class="form-group bord col-md-5">
-                                        <h5 class="tit_h">Close</h5>
-                                    </div>
-                                        <!-- Other Open Result fields go here -->
-
-                                        <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
-                                            name="openDecBtn" onclick="decleareOpenResult();">Declare</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Close Result Box -->
-                        <div class="col-sm-12 col-md-5" style="margin-top: 8px; margin-left: -9%; width: 100%;">
-                            <div class="card" style="width: 446px ">
-                                <div class="card-body" style="padding: 10px; width: 600px;">
-
-                                    <div class="form-group bord col-md-7" id="close_div_msg">
-                                        <!-- Input fields for Close Result -->
-                                        <label class="col-form-label">Cdigit:</label>
-                                        <input style="width: 100%;" class="form-control" type="number" name="Cdigit" required
-                                            placeholder="Enter 3 Digit Value">
-
-                                        <!-- Other Close Result fields go here -->
-
-                                        <button type="button" class="btn btn-primary waves-light m-t-5 display_none"
-                                            name="closeDecBtn" onclick="decleareCloseResult();">Declare</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div id="error2"></div>
-            </div>
-            <!-- Add other form fields or buttons if needed -->
-            <button type="submit" class="btn btn-primary waves-light m-t-10" id="submitBtn" onclick="toggleComponents()">Submit</button>
-        </form> --}}
-
-    <!-- Add any additional form elements or buttons here -->
-    <!-- For example, a submit button -->
-
-
-
-    <!-- Include flatpickr library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        // Initialize flatpickr on the input field
+
         flatpickr("#result_date", {
-            dateFormat: "Y-m-d", // Customize the date format if needed
-            enableTime: false, // Disable time selection
-            // Add more options or customize as needed
+            dateFormat: "Y-m-d",
+            enableTime: false,
         });
     </script>
 

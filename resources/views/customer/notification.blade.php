@@ -68,8 +68,7 @@
     </div>
 </div>
 
-<!-- Add this script after including jQuery -->
-<!-- Add this script after including jQuery and toastr -->
+
 {{-- <script>
     $(document).ready(function () {
         $('#balanceAddFrm').submit(function (e) {
@@ -109,13 +108,6 @@
         });
     });
 
-    // Function to print validation errors
-    function printErrorMsg(errors, formId) {
-        $(formId).find('.text-danger').remove();
-        $.each(errors, function (key, value) {
-            $(formId).find('input[name="' + key + '"], textarea[name="' + key + '"]').after('<span class="text-danger">' + value + '</span>');
-        });
-    }
 </script> --}}
 
     @endsection

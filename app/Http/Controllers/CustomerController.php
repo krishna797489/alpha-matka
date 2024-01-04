@@ -541,13 +541,30 @@ public function update(Request $request)
         return redirect()->back()->with('success', 'Result Declear Successfully');
     }
 
-    public function resulthistory(){
-
+    public function resulthistory(Request $request)
+    {
         $history = Result::orderBy('created_at', 'desc')->get();
-        // dd($history);
-        return view('customer.result_history', array('history' => $history));;
 
+
+        if ($request->ajax()) {
+            return datatables($history)
+                ->addIndexColumn()
+                ->addColumn('games', function ($result) {
+                    $games = $result->games->pluck('name')->toArray();
+                    $lastGame = end($games);
+                    array_pop($games);
+                    array_unshift($games, $lastGame); 
+                    return implode(', ', $games);
+                })
+                ->make(true);
+        }
+
+        return view('customer.result_history', ['history' => $history]);
     }
+
+
+
+
     public function notification(){
         return view('customer.notification');
     }
